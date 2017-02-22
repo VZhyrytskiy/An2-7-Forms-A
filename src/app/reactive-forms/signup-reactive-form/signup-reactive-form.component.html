@@ -14,8 +14,8 @@
         -->
         <form class="form-horizontal"
               novalidate
-              #signupForm="ngForm"
-              (ngSubmit)="save(signupForm)">
+              (ngSubmit)="save()"
+              [formGroup]="userForm">
             <fieldset>
                 <!--
                   [ngClass]="{'has-error': (firstNameVar.touched || firstNameVar.dirty) && !firstNameVar.valid }
@@ -28,32 +28,13 @@
                            for="firstNameId">First Name</label>
 
                     <div class="col-md-8">
-                        <!--
-                          require, minlength="3"
-                            - validation attributes
-                          [(ngModel)]=user.firstName
-                            - binding to Data Model (user)
-                          name="firstName"
-                            - attribute which allows to include this input to the Form Model
-                          #firstNameVar="ngModel"
-                            - reference to input field in Form Model
-                        -->
                         <input class="form-control"
                                id="firstNameId"
                                type="text"
                                placeholder="First Name (required)"
                                required
                                minlength="3"
-                               [(ngModel)]=user.firstName
-                               name="firstName"
-                               #firstNameVar="ngModel" />
-                        <!--
-                          validation message
-                          *ngIf="(firstNameVar.touched || firstNameVar.dirty) && firstNameVar.errors"
-                            - display only when this condition is true
-                          *ngIf="firstNameVar.errors.required"
-                            - validation rule result
-                        -->
+                               formControlName="firstName"/>
                         <span class="help-block" *ngIf="(firstNameVar.touched || firstNameVar.dirty) && firstNameVar.errors">
                             <span *ngIf="firstNameVar.errors.required">
                                 Please enter your first name.
@@ -77,9 +58,7 @@
                                placeholder="Last Name (required)"
                                required
                                maxlength="50"
-                               [(ngModel)]="user.lastName"
-                               name="lastName"
-                               #lastNameVar="ngModel" />
+                               formControlName="lastName"/>
                         <span class="help-block" *ngIf="(lastNameVar.touched || lastNameVar.dirty) && lastNameVar.errors">
                             <span *ngIf="lastNameVar.errors.required">
                                 Please enter your last name.
@@ -102,7 +81,8 @@
                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+"
                                [(ngModel)]="user.email"
                                name="email"
-                               #emailVar="ngModel" />
+                               #emailVar="ngModel"
+                               formControlName="email" />
                         <span class="help-block" *ngIf="(emailVar.touched || emailVar.dirty) && emailVar.errors">
                             <span *ngIf="emailVar.errors.required">
                                 Please enter your email address.
@@ -128,7 +108,8 @@
                             <input id="sendProductsId"
                                    type="checkbox"
                                    [(ngModel)]="user.sendProducts"
-                                   name="sendProducts" >
+                                   name="sendProducts"
+                                   formControlName="sendProducts">
                             Send me your products
                         </label>
                     </div>
@@ -220,7 +201,7 @@
                         <span>
                             <button class="btn btn-primary"
                                     type="submit"
-                                    [disabled]="!signupForm.valid">
+                                    [disabled]="!userForm.valid">
                                 Save
                             </button>
                         </span>
@@ -230,7 +211,7 @@
         </form>
     </div>
 </div>
-<br>Dirty: {{ signupForm.dirty }}
-<br>Touched: {{ signupForm.touched }}
-<br>Valid: {{ signupForm.valid }}
-<br>Value: {{ signupForm.value | json }}
+<br>Dirty: {{ userForm.dirty }}
+<br>Touched: {{ userForm.touched }}
+<br>Valid: {{ userForm.valid }}
+<br>Value: {{ userForm.value | json }}
