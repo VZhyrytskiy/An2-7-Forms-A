@@ -20,7 +20,9 @@ export class SignupFormComponent implements OnInit {
   }
 
   save(signupForm: NgForm) {
+    // Form model
     console.log(signupForm.form);
+    // Form value
     console.log(`Saved: ${JSON.stringify(signupForm.value)}`);
   }
 
