@@ -33,7 +33,7 @@ export class SignupReactiveFormComponent implements OnInit {
       firstName: new FormControl(),
       lastName: new FormControl(),
       email: new FormControl(),
-      sendCatalog: new FormControl(true)
+      sendProducts: new FormControl(true)
     });
   }
 
