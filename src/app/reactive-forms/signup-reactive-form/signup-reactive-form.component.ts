@@ -29,6 +29,22 @@ export class SignupReactiveFormComponent implements OnInit {
     console.log(`Saved: ${JSON.stringify(this.userForm.value)}`);
   }
 
+  setNotification(notifyVia: string) {
+    const phoneControl = this.userForm.get('phone');
+    const emailControl = this.userForm.get('email');
+
+    if (notifyVia === 'text') {
+      phoneControl.setValidators(Validators.required);
+      emailControl.clearValidators();
+    }
+    else {
+      emailControl.setValidators( [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]);
+      phoneControl.clearValidators();
+    }
+    phoneControl.updateValueAndValidity();
+    emailControl.updateValueAndValidity();
+  }
+
   private createForm() {
     this.userForm = new FormGroup({
       firstName: new FormControl(),
@@ -49,6 +65,8 @@ export class SignupReactiveFormComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]
       ],
+      phone: '',
+      notification: 'email',
       sendProducts: true
     });
   }
