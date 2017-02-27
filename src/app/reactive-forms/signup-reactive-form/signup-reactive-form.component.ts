@@ -68,7 +68,8 @@ export class SignupReactiveFormComponent implements OnInit {
       ],
       phone: '',
       notification: 'email',
-      serviceLevel: ['', CustomValidators.serviceLevel],
+      // serviceLevel: ['', CustomValidators.serviceLevel],
+      serviceLevel: ['', CustomValidators.serviceLevelRange(1,3)],
       sendProducts: true
     });
   }
