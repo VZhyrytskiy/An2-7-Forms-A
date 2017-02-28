@@ -134,10 +134,12 @@
                                id="serviceLevelId"
                                type="number"
                                formControlName="serviceLevel"
-                               appServiceLevelValidator />
+                               appServiceLevelValidator rMin="1" rMax="4" #serviceLevelVar />
                         <span class="help-block" *ngIf="(userForm.get('serviceLevel').touched || userForm.get('serviceLevel').dirty) && userForm.get('serviceLevel').errors">
                             <span *ngIf="userForm.get('serviceLevel').errors.serviceLevel">
-                                Please enter correct number from 1 to 3.
+                                Please enter correct number from
+                                {{serviceLevelVar.getAttribute('rMin') || 1}} to
+                                {{serviceLevelVar.getAttribute('rMax') || 3}}.
                             </span>
                         </span>
                     </div>
