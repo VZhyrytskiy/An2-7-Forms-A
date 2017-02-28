@@ -7,12 +7,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { SignupFormComponent } from './template-driven-forms/signup-form';
 import { SignupReactiveFormComponent } from './reactive-forms/signup-reactive-form/signup-reactive-form.component';
+import { ServiceLevelDirective } from './validators/service-level.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupFormComponent,
-    SignupReactiveFormComponent
+    SignupReactiveFormComponent,
+    ServiceLevelDirective
   ],
   imports: [
     BrowserModule,

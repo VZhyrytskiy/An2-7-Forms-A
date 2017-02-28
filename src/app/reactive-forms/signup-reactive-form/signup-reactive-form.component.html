@@ -133,7 +133,8 @@
                         <input class="form-control"
                                id="serviceLevelId"
                                type="number"
-                               formControlName="serviceLevel" />
+                               formControlName="serviceLevel"
+                               appServiceLevelValidator />
                         <span class="help-block" *ngIf="(userForm.get('serviceLevel').touched || userForm.get('serviceLevel').dirty) && userForm.get('serviceLevel').errors">
                             <span *ngIf="userForm.get('serviceLevel').errors.serviceLevel">
                                 Please enter correct number from 1 to 3.
