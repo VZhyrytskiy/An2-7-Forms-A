@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { User } from './../../models/user';
-import { CustomValidators } from './../validators';
+import { CustomValidators } from './../../validators';
 
 @Component({
   selector: 'app-signup-reactive-form',
