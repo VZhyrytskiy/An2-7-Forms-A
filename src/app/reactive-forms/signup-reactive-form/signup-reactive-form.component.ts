@@ -39,7 +39,7 @@ export class SignupReactiveFormComponent implements OnInit {
       emailControl.clearValidators();
     }
     else {
-      emailControl.setValidators( [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]);
+      emailControl.setValidators([Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]);
       phoneControl.clearValidators();
     }
     phoneControl.updateValueAndValidity();
@@ -62,10 +62,12 @@ export class SignupReactiveFormComponent implements OnInit {
         { value: 'Zhyrytskyy', disabled: false },
         [Validators.required, Validators.maxLength(50)]
       ],
-      email: [
-        '',
-        [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]
-      ],
+      emailGroup: this.fb.group({
+        email: ['',
+          [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]
+        ],
+        confirmEmail: ['', Validators.required],
+      }, {validator: CustomValidators.emailMatcher}),
       phone: '',
       notification: 'email',
       serviceLevel: [''],
@@ -82,7 +84,7 @@ export class SignupReactiveFormComponent implements OnInit {
     });
   }
 
-private patchFormValues() {
+  private patchFormValues() {
     this.userForm.patchValue({
       firstName: 'Vitaliy',
       lastName: 'Zhyrytskyy'
