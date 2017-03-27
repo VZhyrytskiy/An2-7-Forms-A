@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
 import { User } from './../../models/user';
@@ -14,8 +14,13 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   countries: Array<string> = ['Ukraine', 'Armenia', 'Belarus', 'Hungary', 'Kazakhstan', 'Poland', 'Russia'];
   user: User = new User();
   userForm: FormGroup;
+  emailMessage: string;
 
   private sub: Subscription;
+  private validationMessages = {
+    required: 'Please enter your email address.',
+    pattern: 'Please enter a valid email address.'
+  };
 
   constructor(
     private fb: FormBuilder
@@ -91,6 +96,16 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  private setMessage(c: AbstractControl) {
+    this.emailMessage = '';
+    if ((c.touched || c.dirty) && c.errors) {
+      this.emailMessage = Object
+        .keys(c.errors)
+        .map(key => this.validationMessages[key])
+        .join(' ');
+    }
+  }
+
   private patchFormValues() {
     this.userForm.patchValue({
       firstName: 'Vitaliy',
@@ -100,8 +115,11 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
 
   private watchValueChanges() {
     this.sub = this.userForm.get('notification').valueChanges
-      // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));
+
+    const emailControl = this.userForm.get('emailGroup.email');
+    emailControl.valueChanges
+      .subscribe(value => this.setMessage(emailControl));
   }
 
 
