@@ -37,7 +37,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     console.log(`Saved: ${JSON.stringify(this.userForm.value)}`);
   }
 
-  setNotification(notifyVia: string) {
+  private setNotification(notifyVia: string) {
     const phoneControl = this.userForm.get('phone');
     const emailControl = this.userForm.get('emailGroup.email');
 
@@ -99,7 +99,9 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   private watchValueChanges() {
-    this.sub = this.userForm.get('notification').valueChanges.subscribe(value => console.log(value));
+    this.sub = this.userForm.get('notification').valueChanges
+      // .subscribe(value => console.log(value));
+      .subscribe(value => this.setNotification(value));
   }
 
 
