@@ -32,7 +32,7 @@ export class SignupReactiveFormComponent implements OnInit {
 
   setNotification(notifyVia: string) {
     const phoneControl = this.userForm.get('phone');
-    const emailControl = this.userForm.get('email');
+    const emailControl = this.userForm.get('emailGroup.email');
 
     if (notifyVia === 'text') {
       phoneControl.setValidators(Validators.required);
