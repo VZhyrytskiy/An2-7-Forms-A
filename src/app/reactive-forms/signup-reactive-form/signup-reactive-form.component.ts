@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
 
 import { User } from './../../models/user';
 import { CustomValidators } from './../../validators';
@@ -9,11 +10,12 @@ import { CustomValidators } from './../../validators';
   templateUrl: './signup-reactive-form.component.html',
   styleUrls: ['./signup-reactive-form.component.css']
 })
-export class SignupReactiveFormComponent implements OnInit {
+export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   countries: Array<string> = ['Ukraine', 'Armenia', 'Belarus', 'Hungary', 'Kazakhstan', 'Poland', 'Russia'];
   user: User = new User();
-
   userForm: FormGroup;
+
+  private sub: Subscription;
 
   constructor(
     private fb: FormBuilder
@@ -21,6 +23,11 @@ export class SignupReactiveFormComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    this.watchValueChanges();
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   save() {
@@ -32,7 +39,7 @@ export class SignupReactiveFormComponent implements OnInit {
 
   setNotification(notifyVia: string) {
     const phoneControl = this.userForm.get('phone');
-    const emailControl = this.userForm.get('email');
+    const emailControl = this.userForm.get('emailGroup.email');
 
     if (notifyVia === 'text') {
       phoneControl.setValidators(Validators.required);
@@ -89,6 +96,10 @@ export class SignupReactiveFormComponent implements OnInit {
       firstName: 'Vitaliy',
       lastName: 'Zhyrytskyy'
     });
+  }
+
+  private watchValueChanges() {
+    this.sub = this.userForm.get('notification').valueChanges.subscribe(value => console.log(value));
   }
 
 
