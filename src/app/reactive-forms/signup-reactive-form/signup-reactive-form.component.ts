@@ -16,7 +16,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   userForm: FormGroup;
   emailMessage: string;
 
-  private sub: Subscription;
+  private sub: Subscription[] = [];
   private validationMessages = {
     required: 'Please enter your email address.',
     pattern: 'Please enter a valid email address.'
@@ -32,7 +32,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.sub.forEach(sub => sub.unsubscribe());
   }
 
   save() {
@@ -114,12 +114,16 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   private watchValueChanges() {
-    this.sub = this.userForm.get('notification').valueChanges
+    const sub1 = this.userForm.get('notification').valueChanges
+      // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));
+    this.sub.push(sub1);
 
     const emailControl = this.userForm.get('emailGroup.email');
-    emailControl.valueChanges
+    const sub2 = emailControl.valueChanges
       .subscribe(value => this.setMessage(emailControl));
+    this.sub.push(sub2);
+
   }
 
 
