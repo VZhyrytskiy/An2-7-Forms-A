@@ -15,7 +15,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   user: User = new User();
   userForm: FormGroup;
 
-  private sub: Subscription;
+  private sub: Subscription[] = [];
 
   constructor(
     private fb: FormBuilder
@@ -27,7 +27,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.sub.forEach(sub => sub.unsubscribe());
   }
 
   save() {
@@ -99,9 +99,10 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   private watchValueChanges() {
-    this.sub = this.userForm.get('notification').valueChanges
+    const sub = this.userForm.get('notification').valueChanges
       // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));
+    this.sub.push(sub);
   }
 
 
