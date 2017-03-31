@@ -173,24 +173,23 @@
                         </label>
                     </div>
                 </div>
-
-                <!--<div *ngIf="user.sendProducts">
+                <div *ngIf="userForm.get('sendProducts').value">
                     <div class="form-group" >
                         <label class="col-md-2 control-label">Address Type</label>
                         <div class="col-md-8">
                                 <label class="radio-inline">
                                     <input type="radio" id="addressType1Id" value="home"
-                                           [(ngModel)]="user.addressType"
+                                           formControlName="addressType"
                                            name="addressType">Home
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" id="addressType1Id" value="work"
-                                           [(ngModel)]="user.addressType"
+                                           formControlName="addressType"
                                            name="addressType">Work
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" id="addressType1Id" value="other"
-                                           [(ngModel)]="user.addressType"
+                                           formControlName="addressType"
                                            name="addressType">Other
                                 </label>
                         </div>
@@ -203,7 +202,7 @@
                         <div class="col-md-3">
                             <select class="form-control"
                                     id="countryId"
-                                    [(ngModel)]="user.country"
+                                    formControlName="country"
                                     name="country">
                                 <option value="">Select a Country...</option>
                                 <option *ngFor="let country of countries"
@@ -215,7 +214,7 @@
                                    class="form-control"
                                    id="cityId"
                                    placeholder="City"
-                                   [(ngModel)]="user.city"
+                                   formControlName="city"
                                    name="city">
                         </div>
                         <div class="col-md-2">
@@ -223,7 +222,7 @@
                                    class="form-control"
                                    id="zipId"
                                    placeholder="Zip Code"
-                                   [(ngModel)]="user.zip"
+                                   formControlName="zip"
                                    name="zip">
                         </div>
                     </div>
@@ -236,7 +235,7 @@
                                    class="form-control"
                                    id="street1Id"
                                    placeholder="Street address"
-                                   [(ngModel)]="user.street1"
+                                   formControlName="street1"
                                    name="street1">
                         </div>
                     </div>
@@ -249,11 +248,11 @@
                                    class="form-control"
                                    id="street2Id"
                                    placeholder="Street address (second line)"
-                                   [(ngModel)]="user.street2"
+                                   formControlName="street2"
                                    name="street2">
                         </div>
                     </div>
-                </div>-->
+                </div>
 
                 <div class="form-group">
                     <div class="col-md-4 col-md-offset-2">
