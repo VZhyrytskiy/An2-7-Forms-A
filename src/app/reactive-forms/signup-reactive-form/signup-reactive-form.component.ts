@@ -85,12 +85,20 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
       notification: 'email',
       serviceLevel: [''],
       sendProducts: true,
-      addressType: 'home',
-      country: '',
-      city: '',
-      zip: '',
-      street1: '',
-      street2: ''
+      // addressType: 'home',
+      // country: '',
+      // city: '',
+      // zip: '',
+      // street1: '',
+      // street2: ''
+      addresses: this.fb.group({
+        addressType: 'home',
+        country: '',
+        city: '',
+        zip: '',
+        street1: '',
+        street2: ''
+      })
     });
   }
 
