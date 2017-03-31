@@ -174,6 +174,15 @@
                     </div>
                 </div>
                 <div *ngIf="userForm.get('sendProducts').value">
+                    <div class="form-group">
+                      <div class="col-md-4 col-md-offset-2">
+                        <button class="btn btn-primary"
+                                type="button"
+                                (click)="addAddress()">
+                          Add Another Address
+                        </button>
+                      </div>
+                    </div>
                     <div formArrayName="addresses"
                          *ngFor="let address of addresses.controls; let i = index">
                       <div [formGroupName]="i">
@@ -272,4 +281,5 @@
 <br>Value: {{ userForm.value | json }}
 <br>ServiceLevel.valid {{userForm.get('serviceLevel').valid}}
 <br>userForm.get('emailGroup').errors {{userForm.get('emailGroup').errors | json}}
+<br>Street: {{addresses.get('0.street1')?.value}}
 
