@@ -179,18 +179,15 @@
                         <div class="col-md-8">
                                 <label class="radio-inline">
                                     <input type="radio" id="addressType1Id" value="home"
-                                           formControlName="addressType"
-                                           name="addressType">Home
+                                           formControlName="addressType">Home
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" id="addressType1Id" value="work"
-                                           formControlName="addressType"
-                                           name="addressType">Work
+                                           formControlName="addressType">Work
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" id="addressType1Id" value="other"
-                                           formControlName="addressType"
-                                           name="addressType">Other
+                                           formControlName="addressType">Other
                                 </label>
                         </div>
                     </div>
@@ -202,8 +199,7 @@
                         <div class="col-md-3">
                             <select class="form-control"
                                     id="countryId"
-                                    formControlName="country"
-                                    name="country">
+                                    formControlName="country">
                                 <option value="">Select a Country...</option>
                                 <option *ngFor="let country of countries"
                                   value="{{country}}">{{country}}</option>
@@ -214,16 +210,14 @@
                                    class="form-control"
                                    id="cityId"
                                    placeholder="City"
-                                   formControlName="city"
-                                   name="city">
+                                   formControlName="city">
                         </div>
                         <div class="col-md-2">
                             <input type="number"
                                    class="form-control"
                                    id="zipId"
                                    placeholder="Zip Code"
-                                   formControlName="zip"
-                                   name="zip">
+                                   formControlName="zip">
                         </div>
                     </div>
 
@@ -235,8 +229,7 @@
                                    class="form-control"
                                    id="street1Id"
                                    placeholder="Street address"
-                                   formControlName="street1"
-                                   name="street1">
+                                   formControlName="street1">
                         </div>
                     </div>
 
@@ -248,8 +241,7 @@
                                    class="form-control"
                                    id="street2Id"
                                    placeholder="Street address (second line)"
-                                   formControlName="street2"
-                                   name="street2">
+                                   formControlName="street2">
                         </div>
                     </div>
                 </div>
@@ -260,7 +252,6 @@
                             <button class="btn btn-primary"
                                     type="submit"
                                     [disabled]="!userForm.valid">
-
                                 Save
                             </button>
                         </span>
