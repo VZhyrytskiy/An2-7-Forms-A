@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/debounceTime';
 
@@ -34,6 +34,10 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.forEach(sub => sub.unsubscribe());
+  }
+
+  get addresses():FormArray {
+    return <FormArray>this.userForm.get('addresses');
   }
 
   save() {
@@ -85,7 +89,8 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
       notification: 'email',
       serviceLevel: [''],
       sendProducts: true,
-      addresses: this.buildAddress()
+      // addresses: this.buildAddress()
+      addresses: this.fb.array([this.buildAddress()])
     });
   }
 
