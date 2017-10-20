@@ -71,7 +71,8 @@
                                 id="emailId"
                                 type="email"
                                 placeholder="Email (required)"
-                                formControlName="email" />
+                                formControlName="email"
+                                asyncEmailValidator />
                            <span class="help-block" *ngIf="emailMessage">
                                 {{emailMessage}}
                            </span>
