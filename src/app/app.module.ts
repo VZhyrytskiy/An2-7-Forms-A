@@ -1,8 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { SignupFormComponent } from './template-driven-forms/signup-form';
@@ -17,8 +15,7 @@ import { SignupReactiveFormComponent } from './reactive-forms/signup-reactive-fo
   imports: [
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule,
-    HttpModule
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
