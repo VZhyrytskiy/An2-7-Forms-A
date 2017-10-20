@@ -67,30 +67,23 @@
 
                       <label class="col-md-2 control-label"
                           for="emailId">Email</label>
-
-                      <div class="col-md-8">
-                          <input class="form-control"
-                                id="emailId"
-                                type="email"
-                                placeholder="Email (required)"
-                                formControlName="email" />
-                          <span class="help-block" *ngIf="(userForm.get('emailGroup.email').touched ||
-                                                           userForm.get('emailGroup.email').dirty) &&
-                                                           userForm.get('emailGroup.email').errors">
-                              <span *ngIf="userForm.get('emailGroup.email').errors.required">
-                                  Please enter your email address.
-                              </span>
-                              <span *ngIf="userForm.get('emailGroup.email').errors.pattern">
-                                  Please enter a valid email address.
-                              </span>
-
-                              <!--
-                                This one does not work, because Angular doesn support
-                                buil-in email, phone, date validator
-                              -->
-                              <!--<span *ngIf="userForm.get('email').errors.email">
-                                  Please enter a valid email address.
-                              </span>-->
+                    <div class="col-md-8">
+                        <input class="form-control"
+                               id="emailId"
+                               type="email"
+                               placeholder="Email (required)"
+                               formControlName="email"
+                               asyncEmailValidator />
+                        <span class="help-block" *ngIf="(userForm.get('emailGroup.email').touched || userForm.get('emailGroup.email').dirty) && userForm.get('emailGroup.email').errors">
+                            <span *ngIf="userForm.get('emailGroup.email').errors.required">
+                                Please enter your email address.
+                            </span>
+                            <span *ngIf="userForm.get('emailGroup.email').errors.pattern">
+                                Please enter a valid email address.
+                            </span>
+                            <span *ngIf="userForm.get('emailGroup.email').errors.asyncEmailInvalid">
+                              This email already exists. Please enter other email address.
+                          </span>
                           </span>
                       </div>
                   </div>
