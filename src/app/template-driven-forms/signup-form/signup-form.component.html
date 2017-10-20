@@ -20,7 +20,7 @@
                                placeholder="First Name (required)"
                                required
                                minlength="3"
-                               [(ngModel)]=user.firstName
+                               [(ngModel)]="user.firstName"
                                 name="firstName"
                                 #firstNameVar="ngModel" />
                         <span class="help-block" *ngIf="(firstNameVar.touched || firstNameVar.dirty) && firstNameVar.errors">
