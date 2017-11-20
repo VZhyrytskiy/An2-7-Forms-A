@@ -21,6 +21,7 @@ export class SignupReactiveFormComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    // this.createForm();
   }
 
   save() {
@@ -48,16 +49,29 @@ export class SignupReactiveFormComponent implements OnInit {
 
   private createForm() {
     this.userForm = new FormGroup({
-      firstName: new FormControl(),
+      firstName: new FormControl('', {
+        validators: [Validators.required, Validators.minLength(3)],
+        updateOn: 'blur'
+      }),
       lastName: new FormControl(),
       email: new FormControl(),
+      phone: new FormControl(),
+      notification: new FormControl('email'),
+      serviceLevel: new FormControl('', {
+        validators: [CustomValidators.serviceLevel],
+        updateOn: 'blur'
+      }),
       sendProducts: new FormControl(true)
     });
   }
 
   private buildForm() {
     this.userForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      // firstName: ['', [Validators.required, Validators.minLength(3)]],
+      // It works!
+      firstName: new FormControl('', {validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur'}),
+      // It doesn't work!, will work in future (Date: 20 Nov 2017)
+      // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
       lastName: [
         { value: 'Zhyrytskyy', disabled: false },
         [Validators.required, Validators.maxLength(50)]
