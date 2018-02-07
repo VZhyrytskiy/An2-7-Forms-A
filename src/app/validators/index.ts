@@ -1,2 +1,2 @@
-export * from './service-level.validator';
+export * from './custom.validators';
 export * from './service-level.directive';
