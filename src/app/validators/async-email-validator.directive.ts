@@ -1,9 +1,7 @@
-import { Directive, forwardRef } from '@angular/core';
+import { Directive } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, Validator, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/first';
+import { debounceTime, distinctUntilChanged, first} from 'rxjs/operators';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -11,14 +9,20 @@ import 'rxjs/add/operator/first';
   providers: [
     {
       provide: NG_ASYNC_VALIDATORS,
-      useExisting: forwardRef(() => AsyncEmailValidatorDirective), multi: true
+      useExisting: AsyncEmailValidatorDirective, 
+      multi: true
     }
   ]
 })
-export default class AsyncEmailValidatorDirective implements Validator {
-  validate(c: AbstractControl): Promise<{ [key: string]: any}>|Observable < {[key: string]: any}> {
+export class AsyncEmailValidatorDirective implements Validator {
+  validate(c: AbstractControl): Promise<{ [key: string]: any}> | Observable < {[key: string]: any}> {
     // return this.validateEmailPromise(c.value);
-    return this.validateEmailObservable(c.value).debounceTime(1000).distinctUntilChanged().first();
+    return this.validateEmailObservable(c.value)
+      .pipe(
+        debounceTime(1000),
+        distinctUntilChanged(),
+        first()
+      );
   }
 
   private validateEmailPromise(email: string) {
