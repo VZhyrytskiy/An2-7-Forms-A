@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ServiceLevelDirective } from './service-level.directive';
-import AsyncEmailValidatorDirective from './async-email-validator.directive';
+import { AsyncEmailValidatorDirective, ServiceLevelDirective } from '.';
 
 @NgModule({
   imports: [
