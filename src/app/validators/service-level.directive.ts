@@ -1,11 +1,13 @@
 import { Directive, Input } from '@angular/core';
 import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
 
+import { checkServiceLevel } from './custom.validators';
+
 @Directive({
   selector: '[appServiceLevelValidator]',
   providers: [{
       provide: NG_VALIDATORS,
-      useExisting: ServiceLevelDirective,
+      useClass: ServiceLevelDirective,
       multi: true
   }]
 })
@@ -14,12 +16,6 @@ export class ServiceLevelDirective implements Validator {
   @Input() rMax = 3;
 
   validate(c: AbstractControl): { [key: string]: boolean } | null {
-    console.log(c.value);
-    if (c.value !== undefined && (Number.isNaN(c.value) || c.value < this.rMin || c.value > this.rMax)) {
-      return {
-        'serviceLevel': true
-      };
-    }
-    return null;
+    return checkServiceLevel(c, this.rMin, this.rMax);
   }
 }
