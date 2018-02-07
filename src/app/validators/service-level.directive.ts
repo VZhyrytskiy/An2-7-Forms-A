@@ -5,17 +5,20 @@ import { checkServiceLevel } from './custom.validators';
 
 @Directive({
   selector: '[appServiceLevelValidator]',
-  providers: [{
+  providers: [
+    {
       provide: NG_VALIDATORS,
-      useClass: ServiceLevelDirective,
+      useExisting: ServiceLevelDirective,
       multi: true
-  }]
+    }
+  ]
 })
 export class ServiceLevelDirective implements Validator {
-  @Input() rMin = 1;
-  @Input() rMax = 3;
+  @Input() rMin: number;
+  @Input() rMax: number;
 
   validate(c: AbstractControl): { [key: string]: boolean } | null {
+    console.log(this.rMax);
     return checkServiceLevel(c, this.rMin, this.rMax);
   }
 }
