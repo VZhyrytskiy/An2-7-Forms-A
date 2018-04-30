@@ -14,7 +14,7 @@ import { SignupReactiveFormComponent } from './reactive-forms/signup-reactive-fo
     SignupFormComponent,
     SignupReactiveFormComponent
   ],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]
 })
