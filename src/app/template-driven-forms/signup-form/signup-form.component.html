@@ -78,15 +78,6 @@
                             <span *ngIf="emailVar.hasError('pattern')">
                                 Please enter a valid email address.
                             </span>
-
-                            <!--
-                              This one does not work, because Angular 2.0 doesn support
-                              buil-in email, phone, date validator
-                              Email validator is supported since Angular 4.0
-                             -->
-                            <span *ngIf="emailVar.hasError('email')">
-                                Please enter a valid email address.
-                            </span>
                         </span>
                     </div>
                 </div>
