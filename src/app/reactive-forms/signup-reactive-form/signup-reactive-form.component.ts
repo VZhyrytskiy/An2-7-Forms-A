@@ -21,9 +21,7 @@ export class SignupReactiveFormComponent implements OnInit {
   user: User = new User();
   userForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder
-  ) { }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.buildForm();
@@ -50,7 +48,7 @@ export class SignupReactiveFormComponent implements OnInit {
   private buildForm() {
     this.userForm = this.fb.group({
       firstName: '',
-      lastName: {value: 'Zhyrytskyy', disabled: true},
+      lastName: { value: 'Zhyrytskyy', disabled: true },
       email: [''],
       sendProducts: true
     });
