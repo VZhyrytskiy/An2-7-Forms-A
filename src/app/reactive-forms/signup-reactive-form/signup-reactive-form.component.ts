@@ -11,7 +11,6 @@ import { User } from './../../models/user';
 export class SignupReactiveFormComponent implements OnInit {
   countries: Array<string> = ['Ukraine', 'Armenia', 'Belarus', 'Hungary', 'Kazakhstan', 'Poland', 'Russia'];
   user: User = new User();
-
   userForm: FormGroup;
 
   constructor() {
