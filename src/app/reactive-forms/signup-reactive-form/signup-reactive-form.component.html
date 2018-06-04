@@ -29,8 +29,6 @@
                                id="firstNameId"
                                type="text"
                                placeholder="First Name (required)"
-                               required
-                               minlength="3"
                                formControlName="firstName" />
                         <span class="help-block" *ngIf="(userForm.get('firstName').touched || userForm.get('firstName').dirty) && userForm.get('firstName').errors">
                                 <span *ngIf="userForm.get('firstName').hasError('required')">
@@ -54,8 +52,6 @@
                                id="lastNameId"
                                type="text"
                                placeholder="Last Name (required)"
-                               required
-                               maxlength="50"
                                formControlName="lastName" />
                         <span class="help-block" *ngIf="(userForm.get('lastName').touched || userForm.get('lastName').dirty) && userForm.get('lastName').errors">
                                 <span *ngIf="userForm.get('lastName').hasError('required')">
