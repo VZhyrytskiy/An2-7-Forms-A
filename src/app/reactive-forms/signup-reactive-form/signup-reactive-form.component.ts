@@ -41,16 +41,19 @@ export class SignupReactiveFormComponent implements OnInit {
     console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
   }
 
-  setNotification(notifyVia: string) {
+  onSetNotification(notifyVia: string) {
     const phoneControl = this.userForm.get('phone');
     const emailControl = this.userForm.get('email');
 
     if (notifyVia === 'text') {
       phoneControl.setValidators(Validators.required);
       emailControl.clearValidators();
-    }
-    else {
-      emailControl.setValidators( [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]);
+    } else {
+      emailControl.setValidators([
+        Validators.required,
+        Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
+        Validators.email
+      ]);
       phoneControl.clearValidators();
     }
     phoneControl.updateValueAndValidity();

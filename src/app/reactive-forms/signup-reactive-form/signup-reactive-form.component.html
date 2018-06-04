@@ -100,7 +100,7 @@
                                placeholder="Phone"
                                formControlName="phone" />
                         <span class="help-block" *ngIf="userForm.get('phone').errors">
-                            <span *ngIf="userForm.get('phone').errors.required">
+                            <span *ngIf="userForm.get('phone').hasError('required')">
                                 Please enter your phone number.
                             </span>
                         </span>
@@ -114,13 +114,13 @@
                         <input type="radio"
                                value="email"
                                formControlName="notification"
-                               (click)="setNotification('email')">Email
+                               (click)="onSetNotification('email')">Email
                        </label>
                        <label class="radio-online">
                         <input type="radio"
                                value="text"
                                formControlName="notification"
-                               (click)="setNotification('text')">Text
+                               (click)="onSetNotification('text')">Text
                        </label>
                     </div>
                  </div>
