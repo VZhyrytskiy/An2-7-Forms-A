@@ -25,6 +25,10 @@ export class SignupReactiveFormComponent implements OnInit {
   ];
   user: User = new User();
   userForm: FormGroup;
+  placeholder = {
+    email: 'Email (required)',
+    phone: 'Phone'
+  };
 
   constructor(private fb: FormBuilder) {}
 
@@ -48,6 +52,8 @@ export class SignupReactiveFormComponent implements OnInit {
     if (notifyVia === 'text') {
       phoneControl.setValidators(Validators.required);
       emailControl.clearValidators();
+      this.placeholder.email = 'Email';
+      this.placeholder.phone = 'Phone (required)';
     } else {
       emailControl.setValidators([
         Validators.required,
@@ -55,6 +61,8 @@ export class SignupReactiveFormComponent implements OnInit {
         Validators.email
       ]);
       phoneControl.clearValidators();
+      this.placeholder.email = 'Email (required)';
+      this.placeholder.phone = 'Phone';
     }
     phoneControl.updateValueAndValidity();
     emailControl.updateValueAndValidity();
