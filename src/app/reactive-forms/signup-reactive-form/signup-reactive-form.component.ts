@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators
+} from '@angular/forms';
 
 import { User } from './../../models/user';
 
@@ -9,14 +14,19 @@ import { User } from './../../models/user';
   styleUrls: ['./signup-reactive-form.component.css']
 })
 export class SignupReactiveFormComponent implements OnInit {
-  countries: Array<string> = ['Ukraine', 'Armenia', 'Belarus', 'Hungary', 'Kazakhstan', 'Poland', 'Russia'];
+  countries: Array<string> = [
+    'Ukraine',
+    'Armenia',
+    'Belarus',
+    'Hungary',
+    'Kazakhstan',
+    'Poland',
+    'Russia'
+  ];
   user: User = new User();
-
   userForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder
-  ) { }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.buildForm();
@@ -25,8 +35,10 @@ export class SignupReactiveFormComponent implements OnInit {
   save() {
     // Form model
     console.log(this.userForm);
-    // Form value
+    // Form value w/o disabled controls
     console.log(`Saved: ${JSON.stringify(this.userForm.value)}`);
+    // Form value w/ disabled controls
+    console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
   }
 
   setNotification(notifyVia: string) {
@@ -63,7 +75,11 @@ export class SignupReactiveFormComponent implements OnInit {
       ],
       email: [
         '',
-        [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]
+        [
+          Validators.required,
+          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
+          Validators.email
+        ]
       ],
       phone: '',
       notification: 'email',
@@ -80,17 +96,10 @@ export class SignupReactiveFormComponent implements OnInit {
     });
   }
 
-private patchFormValues() {
+  private patchFormValues() {
     this.userForm.patchValue({
       firstName: 'Vitaliy',
       lastName: 'Zhyrytskyy'
     });
   }
-
-
 }
-
-
-
-
-
