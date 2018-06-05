@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="form-group"
-                     [ngClass]="{'has-error': (userForm.get('email').touched || userForm.get('email').dirty) && !userForm.get('email').valid }">
+                     [ngClass]="{'has-error': (userForm.get('email').touched || userForm.get('email').dirty) && userForm.get('email').invalid }">
                     <label class="col-md-2 control-label"
                         for="emailId">Email</label>
 
