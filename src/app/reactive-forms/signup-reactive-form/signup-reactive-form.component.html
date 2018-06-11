@@ -184,6 +184,9 @@
                             <select class="form-control"
                                     id="countryId">
                                 <option value="">Select a Country...</option>
+                                <option *ngFor="let country of countries"
+                                        value="{{country}}">{{country}}
+                                </option>
                             </select>
                         </div>
                          <div class="col-md-3">
