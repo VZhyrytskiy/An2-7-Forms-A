@@ -4,42 +4,46 @@
     </div>
 
     <div class="panel-body">
+        <!--
+          novalidate
+            - turn off the browser validation
+          (ngSubmit)="save(signupForm)
+            - submit event handler accepts Form Model
+        -->
         <form class="form-horizontal"
               novalidate
               (ngSubmit)="save()"
               [formGroup]="userForm">
             <fieldset>
-                <!--
-                  [ngClass]="{'has-error': (firstNameVar.touched || firstNameVar.dirty) && !firstNameVar.valid }
-                    - buil-in directive ngClass accepts objects as its value.
-                    - this object has a reference to template reference variable firstNameVar for first input
-                -->
                 <div class="form-group"
-                    [ngClass]="{'has-error': (userForm.get('firstName').touched || userForm.get('firstName').dirty) && !userForm.get('firstName').valid }">
+                     [ngClass]="{'has-error': (userForm.get('firstName').touched || userForm.get('firstName').dirty) && !userForm.get('firstName').valid }">
                     <label class="col-md-2 control-label"
                            for="firstNameId">First Name</label>
 
                     <div class="col-md-8">
+                        <!--
+                          require, minlength="3"
+                            - validation attributes
+                        -->
                         <input class="form-control"
                                id="firstNameId"
                                type="text"
                                placeholder="First Name (required)"
-                               formControlName="firstName"/>
-                        <span class="help-block" *ngIf="(userForm.get('firstName').touched ||
-                                                         userForm.get('firstName').dirty) &&
-                                                         userForm.get('firstName').errors">
-                            <span *ngIf="userForm.get('firstName').errors.required">
-                                Please enter your first name.
-                            </span>
-                            <span *ngIf="userForm.get('firstName').errors.minlength">
-                                The first name must be longer than 3 characters.
-                            </span>
+                               formControlName="firstName" />
+                        <span class="help-block" *ngIf="(userForm.get('firstName').touched || userForm.get('firstName').dirty) && userForm.get('firstName').errors">
+                                <span *ngIf="userForm.get('firstName').hasError('required')">
+                                      Please enter your first name.
+                                </span>
+                                <span *ngIf="userForm.get('firstName').hasError('minlength')">
+                                      The first name must be longer than 3 characters.
+                                </span>
                         </span>
+                          
                     </div>
                 </div>
 
                 <div class="form-group"
-                    [ngClass]="{'has-error': (userForm.get('lastName').touched || userForm.get('lastName').dirty) && !userForm.get('lastName').valid }">
+                     [ngClass]="{'has-error': (userForm.get('lastName').touched || userForm.get('lastName').dirty) && !userForm.get('lastName').valid }">
                     <label class="col-md-2 control-label"
                         for="lastNameId">Last Name</label>
 
@@ -48,12 +52,13 @@
                                id="lastNameId"
                                type="text"
                                placeholder="Last Name (required)"
-                               formControlName="lastName"/>
+                               formControlName="lastName" />
                         <span class="help-block" *ngIf="(userForm.get('lastName').touched || userForm.get('lastName').dirty) && userForm.get('lastName').errors">
-                            <span *ngIf="userForm.get('lastName').errors.required">
-                                Please enter your last name.
-                            </span>
+                                <span *ngIf="userForm.get('lastName').hasError('required')">
+                                            Please enter your last name.
+                                </span>
                         </span>
+                    
                     </div>
                 </div>
 
@@ -61,7 +66,7 @@
                      [ngClass]="{'has-error': userForm.get('emailGroup').errors}">
                   <!--Email -->
                   <div class="form-group"
-                      [ngClass]="{'has-error': emailMessage}">
+                      [ngClass]="{'has-error': validationMessage}">
 
                       <label class="col-md-2 control-label"
                           for="emailId">Email</label>
@@ -70,42 +75,42 @@
                           <input class="form-control"
                                 id="emailId"
                                 type="email"
-                                placeholder="Email (required)"
+                                placeholder={{placeholder.email}}
                                 formControlName="email"
-                                asyncEmailValidator />
-                           <span class="help-block" *ngIf="emailMessage">
-                                {{emailMessage}}
+                                asyncEmailValidator
+                                (blur)="onBlur()" />
+                           <span class="help-block" *ngIf="validationMessage">
+                                {{validationMessage}}
                            </span>
                       </div>
-                  </div>
+                    </div>
 
-                  <!-- ConfirmEmail-->
-                  <div class="form-group"
+                    <!-- ConfirmEmail-->
+                    <div class="form-group"
                       [ngClass]="{'has-error': (userForm.get('emailGroup.confirmEmail').touched ||
                                                 userForm.get('emailGroup.confirmEmail').dirty) &&
-                                                !userForm.get('emailGroup.confirmEmail').valid }">
-                      <label class="col-md-2 control-label"
-                          for="confirmEmailId">Confirm Email</label>
+                                                userForm.get('emailGroup.confirmEmail').invalid }">
+                      <label class="col-md-2 control-label" for="confirmEmailId">Confirm Email</label>
 
                       <div class="col-md-8">
                           <input class="form-control"
                                 id="confirmEmailId"
                                 type="email"
-                                placeholder="Confirm Email (required)"
+                                placeholder={{placeholder.confirmEmail}}
                                 formControlName="confirmEmail" />
                           <span class="help-block" *ngIf="(userForm.get('emailGroup.confirmEmail').touched ||
                                                           userForm.get('emailGroup.confirmEmail').dirty) &&
                                                           (userForm.get('emailGroup.confirmEmail').errors ||
                                                           userForm.get('emailGroup').errors) ">
-                              <span *ngIf="userForm.get('emailGroup.confirmEmail').errors?.required">
+                              <span *ngIf="userForm.get('emailGroup.confirmEmail').hasError('required')">
                                   Please confirm your email address.
                               </span>
-                              <span *ngIf="userForm.get('emailGroup').errors?.emailMatch">
+                              <span *ngIf="userForm.get('emailGroup').hasError('emailMatch')">
                                   The confirmation does not match the email address.
                               </span>
                           </span>
                       </div>
-                  </div>
+                    </div>
                 </div>
 
                 <div class="form-group"
@@ -117,10 +122,10 @@
                         <input class="form-control"
                                id="phoneId"
                                type="tel"
-                               placeholder="Phone"
+                               placeholder={{placeholder.phone}}
                                formControlName="phone" />
                         <span class="help-block" *ngIf="userForm.get('phone').errors">
-                            <span *ngIf="userForm.get('phone').errors.required">
+                            <span *ngIf="userForm.get('phone').hasError('required')">
                                 Please enter your phone number.
                             </span>
                         </span>
@@ -155,7 +160,7 @@
                                formControlName="serviceLevel"
                                appServiceLevelValidator rMin="1" rMax="4" #serviceLevelVar />
                         <span class="help-block" *ngIf="(userForm.get('serviceLevel').touched || userForm.get('serviceLevel').dirty) && userForm.get('serviceLevel').errors">
-                            <span *ngIf="userForm.get('serviceLevel').errors.serviceLevel">
+                            <span *ngIf="userForm.get('serviceLevel').hasError('serviceLevel')">
                                 Please enter correct number from
                                 {{serviceLevelVar.getAttribute('rMin') || 1}} to
                                 {{serviceLevelVar.getAttribute('rMax') || 3}}.
@@ -169,7 +174,7 @@
                         <label>
                             <input id="sendProductsId"
                                    type="checkbox"
-                                   formControlName="sendProducts">
+                                   formControlName="sendProducts" />
                             Send me your products
                         </label>
                     </div>
@@ -203,7 +208,8 @@
                                     formControlName="country">
                                 <option value="">Select a Country...</option>
                                 <option *ngFor="let country of countries"
-                                  value="{{country}}">{{country}}</option>
+                                        value="{{country}}">{{country}}
+                                </option>
                             </select>
                         </div>
                          <div class="col-md-3">
@@ -268,4 +274,4 @@
 <br>Value: {{ userForm.value | json }}
 <br>ServiceLevel.valid {{userForm.get('serviceLevel').valid}}
 <br>userForm.get('emailGroup').errors {{userForm.get('emailGroup').errors | json}}
-
+<br>Form Status: {{userForm.status }}

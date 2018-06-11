@@ -5,13 +5,11 @@ import { checkServiceLevel } from './custom.validators';
 
 @Directive({
   selector: '[appServiceLevelValidator]',
-  providers: [
-    {
+  providers: [{
       provide: NG_VALIDATORS,
       useExisting: ServiceLevelDirective,
       multi: true
-    }
-  ]
+  }]
 })
 export class ServiceLevelDirective implements Validator {
   @Input() rMin: number;
