@@ -180,9 +180,8 @@
                     </div>
                 </div>
                 <div *ngIf="userForm.get('sendProducts').value">
-                    <div formArrayName="addresses"
-                         *ngFor="let address of addresses.controls; let i = index">
-                      <div [formGroupName]="i">
+                    <div formArrayName="addresses">
+                      <div *ngFor="let address of addresses.controls; let i = index" [formGroupName]="i">
                         <div class="form-group" >
                             <label class="col-md-2 control-label">Address Type</label>
                             <div class="col-md-8">
