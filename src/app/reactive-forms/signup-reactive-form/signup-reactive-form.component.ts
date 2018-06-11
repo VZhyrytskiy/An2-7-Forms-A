@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { User } from './../../models/user';
 import { CustomValidators } from './../../validators';
@@ -14,6 +14,11 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   countries: Array<string> = ['Ukraine', 'Armenia', 'Belarus', 'Hungary', 'Kazakhstan', 'Poland', 'Russia'];
   user: User = new User();
   userForm: FormGroup;
+  placeholder = {
+    email: 'Email (required)',
+    confirmEmail: 'Confirm Email (required)',
+    phone: 'Phone'
+  };
 
   private sub: Subscription;
 
@@ -33,24 +38,53 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   save() {
     // Form model
     console.log(this.userForm);
-    // Form value
+    // Form value w/o disabled controls
     console.log(`Saved: ${JSON.stringify(this.userForm.value)}`);
+    // Form value w/ disabled controls
+    console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
   }
 
   private setNotification(notifyVia: string) {
-    const phoneControl = this.userForm.get('phone');
-    const emailControl = this.userForm.get('emailGroup.email');
+    const controls = new Map();
+    controls.set('phoneControl', this.userForm.get('phone'));
+    controls.set('emailGroup', this.userForm.get('emailGroup'));
+    controls.set('emailControl', this.userForm.get('emailGroup.email'));
+    controls.set(
+      'confirmEmailControl',
+      this.userForm.get('emailGroup.confirmEmail')
+    );
 
     if (notifyVia === 'text') {
-      phoneControl.setValidators(Validators.required);
-      emailControl.clearValidators();
+      controls.get('phoneControl').setValidators(Validators.required);
+      controls.forEach(
+        (control, index) =>
+          index !== 'phoneControl' && control.clearValidators()
+      );
+
+      this.placeholder = {
+        phone: 'Phone (required)',
+        email: 'Email',
+        confirmEmail: 'Confirm Email'
+      };
+    } else {
+      controls
+        .get('emailControl')
+        .setValidators([
+          Validators.required,
+          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
+          Validators.email
+        ]);
+      controls.get('confirmEmailControl').setValidators([Validators.required]);
+      controls.get('emailGroup').setValidators([CustomValidators.emailMatcher]);
+      controls.get('phoneControl').clearValidators();
+
+      this.placeholder = {
+        phone: 'Phone',
+        email: 'Email (required)',
+        confirmEmail: 'Confirm Email (required)'
+      };
     }
-    else {
-      emailControl.setValidators([Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]);
-      phoneControl.clearValidators();
-    }
-    phoneControl.updateValueAndValidity();
-    emailControl.updateValueAndValidity();
+    controls.forEach(control => control.updateValueAndValidity());
   }
 
   private createForm() {
@@ -75,19 +109,30 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     this.userForm = this.fb.group({
       // firstName: ['', [Validators.required, Validators.minLength(3)]],
       // It works!
-      firstName: new FormControl('', {validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur'}),
+      firstName: new FormControl('', {
+        validators: [Validators.required, Validators.minLength(3)],
+        updateOn: 'blur'
+      }),
       // It doesn't work!, will work in future (Date: 20 Nov 2017)
       // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
       lastName: [
         { value: 'Zhyrytskyy', disabled: false },
         [Validators.required, Validators.maxLength(50)]
       ],
-      emailGroup: this.fb.group({
-        email: ['',
-          [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]
-        ],
-        confirmEmail: ['', Validators.required],
-      }, {validator: CustomValidators.emailMatcher}),
+      emailGroup: this.fb.group(
+        {
+          email: [
+            '',
+            [
+              Validators.required,
+              Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
+              Validators.email
+            ]
+          ],
+          confirmEmail: ['', Validators.required]
+        },
+        { validator: CustomValidators.emailMatcher }
+      ),
       phone: '',
       notification: 'email',
       serviceLevel: [''],
@@ -119,8 +164,3 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
 
 
 }
-
-
-
-
-
