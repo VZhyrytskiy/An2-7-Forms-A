@@ -35,7 +35,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  save() {
+  onSave() {
     // Form model
     console.log(this.userForm);
     // Form value w/o disabled controls
