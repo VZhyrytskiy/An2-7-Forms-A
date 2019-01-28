@@ -36,7 +36,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   };
 
   private sub: Subscription;
-  private validationMessages = {
+  private validationMessagesMap = {
     email: {
       required: 'Please enter your email address.',
       pattern: 'Please enter a valid email address.',
@@ -57,7 +57,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  save() {
+  onSave() {
     // Form model
     console.log(this.userForm);
     // Form value w/o disabled controls
@@ -176,7 +176,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
 
     if ((c.touched || c.dirty) && c.errors) {
       this.validationMessage = Object.keys(c.errors)
-        .map(key => this.validationMessages[controlName][key])
+        .map(key => this.validationMessagesMap[controlName][key])
         .join(' ');
     }
   }
