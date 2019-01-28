@@ -29,7 +29,7 @@ export class SignupReactiveFormComponent implements OnInit {
     this.patchFormValues();
   }
 
-  save() {
+  onSave() {
     // Form model
     console.log(this.userForm);
     // Form value w/o disabled controls
