@@ -7,12 +7,12 @@
         <!--
           novalidate
             - turn off the browser validation
-          (ngSubmit)="save(signupForm)
+          (ngSubmit)="onSave(signupForm)
             - submit event handler accepts Form Model
         -->
         <form class="form-horizontal"
               novalidate
-              (ngSubmit)="save()"
+              (ngSubmit)="onSave()"
               [formGroup]="userForm">
             <fieldset>
                 <div class="form-group"
@@ -38,7 +38,7 @@
                                       The first name must be longer than 3 characters.
                                 </span>
                         </span>
-                          
+
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
                                             Please enter your last name.
                                 </span>
                         </span>
-                    
+
                     </div>
                 </div>
 
@@ -84,7 +84,7 @@
                                      Please enter a valid email address.
                                </span>
                         </span>
-                          
+
                     </div>
                 </div>
 
@@ -166,12 +166,10 @@
                                            >Home
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" id="addressType1Id" value="work"
-                                           >Work
+                                    <input type="radio" id="addressType2Id" value="work">Work
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" id="addressType1Id" value="other"
-                                           >Other
+                                    <input type="radio" id="addressType3Id" value="other">Other
                                 </label>
                         </div>
                     </div>

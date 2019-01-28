@@ -38,7 +38,7 @@ export class SignupReactiveFormComponent implements OnInit {
     // this.createForm();
   }
 
-  save() {
+  onSave() {
     // Form model
     console.log(this.userForm);
     // Form value w/o disabled controls
