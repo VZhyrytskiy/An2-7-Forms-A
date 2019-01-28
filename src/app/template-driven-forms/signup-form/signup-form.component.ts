@@ -20,7 +20,7 @@ export class SignupFormComponent implements OnInit {
   }
 
 
-  save(signupForm: NgForm) {
+  onSave(signupForm: NgForm) {
     // Form model
     console.log(signupForm.form);
     // Form value
