@@ -7,7 +7,7 @@
         <form class="form-horizontal"
               novalidate
               #signupForm="ngForm"
-              (ngSubmit)="save(signupForm)">
+              (ngSubmit)="onSave(signupForm)">
             <fieldset>
                 <div class="form-group"
                      [ngClass]="{'has-error': (firstNameVar.touched || firstNameVar.dirty) && firstNameVar.invalid}">
