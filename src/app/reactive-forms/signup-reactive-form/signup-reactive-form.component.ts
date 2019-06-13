@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
-import { User } from './../../models/user';
+import { UserModel } from './../../models/user.model';
 
 @Component({
   selector: 'app-signup-reactive-form',
@@ -18,7 +18,10 @@ export class SignupReactiveFormComponent implements OnInit {
     'Poland',
     'Russia'
   ];
-  user: User = new User();
+  // data model
+  user: UserModel = new UserModel();
+
+  // form model
   userForm: FormGroup;
 
   constructor() {}
