@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
-import { User } from './../../models/user';
+import { UserModel } from './../../models/user.model';
 
 @Component({
   selector: 'app-signup-reactive-form',
@@ -18,7 +18,15 @@ export class SignupReactiveFormComponent implements OnInit {
     'Poland',
     'Russia'
   ];
-  user: User = new User();
+  // data model
+  user: UserModel = new UserModel(
+    'Vitaliy',
+    'Zhyrytskyy',
+    'v.zhiritskiy@gmail.com',
+    false
+  );
+
+  // form model
   userForm: FormGroup;
 
   constructor(private fb: FormBuilder) {}
@@ -56,17 +64,17 @@ export class SignupReactiveFormComponent implements OnInit {
 
   private setFormValues() {
     this.userForm.setValue({
-      firstName: 'Vitaliy',
-      lastName: 'Zhyrytskyy',
-      email: 'vitaliy_zhyrytskyy@ukr.net',
-      sendProducts: false
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      email: this.user.email,
+      sendProducts: this.user.sendProducts
     });
   }
 
   private patchFormValues() {
     this.userForm.patchValue({
-      firstName: 'Vitaliy',
-      lastName: 'Zhyrytskyy'
+      firstName: this.user.firstName,
+      lastName: this.user.lastName
     });
   }
 }
