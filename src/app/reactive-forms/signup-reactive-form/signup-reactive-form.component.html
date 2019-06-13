@@ -4,14 +4,7 @@
     </div>
 
     <div class="panel-body">
-        <!--
-          novalidate
-            - turn off the browser validation
-          (ngSubmit)="onSave(signupForm)
-            - submit event handler accepts Form Model
-        -->
         <form class="form-horizontal"
-              novalidate
               (ngSubmit)="onSave()"
               [formGroup]="userForm">
             <fieldset>
@@ -21,10 +14,6 @@
                            for="firstNameId">First Name</label>
 
                     <div class="col-md-8">
-                        <!--
-                          require, minlength="3"
-                            - validation attributes
-                        -->
                         <input class="form-control"
                                id="firstNameId"
                                type="text"
