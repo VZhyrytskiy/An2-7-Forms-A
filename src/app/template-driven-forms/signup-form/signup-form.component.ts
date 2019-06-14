@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { User } from './../../models/user';
+import { UserModel } from '../../models/user.model';
 
 @Component({
   selector: 'app-signup-form',
@@ -10,7 +10,7 @@ import { User } from './../../models/user';
 })
 export class SignupFormComponent implements OnInit {
   countries: Array<string> = ['Ukraine', 'Armenia', 'Belarus', 'Hungary', 'Kazakhstan', 'Poland', 'Russia'];
-  user: User = new User();
+  user: UserModel = new UserModel();
 
   constructor() {
   }
