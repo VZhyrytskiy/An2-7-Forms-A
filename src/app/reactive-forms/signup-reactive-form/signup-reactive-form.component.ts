@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { User } from './../../models/user';
+import { UserModel } from './../../models/user.model';
 import { CustomValidators } from './../../validators';
 
 @Component({
@@ -11,8 +11,28 @@ import { CustomValidators } from './../../validators';
   styleUrls: ['./signup-reactive-form.component.css']
 })
 export class SignupReactiveFormComponent implements OnInit, OnDestroy {
-  countries: Array<string> = ['Ukraine', 'Armenia', 'Belarus', 'Hungary', 'Kazakhstan', 'Poland', 'Russia'];
-  user: User = new User();
+  countries: Array<string> = [
+    'Ukraine',
+    'Armenia',
+    'Belarus',
+    'Hungary',
+    'Kazakhstan',
+    'Poland',
+    'Russia'
+  ];
+
+  rMin = 1;
+  rMax = 3;
+
+  // data model
+  user: UserModel = new UserModel(
+    'Vitaliy',
+    'Zhyrytskyy',
+    'v.zhiritskiy@gmail.com',
+    false
+  );
+
+  // form model
   userForm: FormGroup;
   placeholder = {
     email: 'Email (required)',
@@ -57,8 +77,12 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     if (notifyVia === 'text') {
       controls.get('phoneControl').setValidators(Validators.required);
       controls.forEach(
-        (control, index) =>
-          index !== 'phoneControl' && control.clearValidators()
+        (control, index) => {
+          if (index !== 'phoneControl') {
+            control.clearValidators();
+            control.clearAsyncValidators()
+          }
+        }
       );
 
       this.placeholder = {
@@ -67,13 +91,13 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
         confirmEmail: 'Confirm Email'
       };
     } else {
-      controls
-        .get('emailControl')
-        .setValidators([
-          Validators.required,
-          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
-          Validators.email
-        ]);
+      const emailControl = controls.get('emailControl');
+      emailControl.setValidators([
+        Validators.required,
+        Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
+        Validators.email
+      ]);
+      emailControl.setAsyncValidators(CustomValidators.asyncEmailPromiseValidator);
       controls.get('confirmEmailControl').setValidators([Validators.required]);
       controls.get('emailGroup').setValidators([CustomValidators.emailMatcher]);
       controls.get('phoneControl').clearValidators();
@@ -127,7 +151,8 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
               Validators.required,
               Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
               Validators.email
-            ]
+            ],
+            // [CustomValidators.asyncEmailPromiseValidator]
           ],
           confirmEmail: ['', Validators.required]
         },
@@ -136,23 +161,28 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
       phone: '',
       notification: 'email',
       serviceLevel: [''],
+      // serviceLevel: ['', CustomValidators.serviceLevel],
+      // serviceLevel: [
+      //   '',
+      //   CustomValidators.serviceLevelRange(this.rMin, this.rMax)
+      // ],
       sendProducts: true
     });
   }
 
   private setFormValues() {
     this.userForm.setValue({
-      firstName: 'Vitaliy',
-      lastName: 'Zhyrytskyy',
-      email: 'vitaliy_zhyrytskyy@ukr.net',
-      sendProducts: false
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      email: this.user.email,
+      sendProducts: this.user.sendProducts
     });
   }
 
   private patchFormValues() {
     this.userForm.patchValue({
-      firstName: 'Vitaliy',
-      lastName: 'Zhyrytskyy'
+      firstName: this.user.firstName,
+      lastName: this.user.lastName
     });
   }
 
