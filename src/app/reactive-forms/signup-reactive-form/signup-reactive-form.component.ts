@@ -6,7 +6,7 @@ import {
   Validators
 } from '@angular/forms';
 
-import { User } from './../../models/user';
+import { UserModel } from './../../models/user.model';
 import { CustomValidators } from './../../validators';
 
 @Component({
@@ -24,7 +24,19 @@ export class SignupReactiveFormComponent implements OnInit {
     'Poland',
     'Russia'
   ];
-  user: User = new User();
+
+  rMin = 1;
+  rMax = 3;
+
+  // data model
+  user: UserModel = new UserModel(
+    'Vitaliy',
+    'Zhyrytskyy',
+    'v.zhiritskiy@gmail.com',
+    false
+  );
+
+  // form model
   userForm: FormGroup;
   placeholder = {
     email: 'Email (required)',
@@ -54,6 +66,7 @@ export class SignupReactiveFormComponent implements OnInit {
     if (notifyVia === 'text') {
       phoneControl.setValidators(Validators.required);
       emailControl.clearValidators();
+      emailControl.clearAsyncValidators();
       this.placeholder.email = 'Email';
       this.placeholder.phone = 'Phone (required)';
     } else {
@@ -62,6 +75,9 @@ export class SignupReactiveFormComponent implements OnInit {
         Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
         Validators.email
       ]);
+      emailControl.setAsyncValidators(
+        CustomValidators.asyncEmailPromiseValidator
+      );
       phoneControl.clearValidators();
       this.placeholder.email = 'Email (required)';
       this.placeholder.phone = 'Phone';
@@ -92,7 +108,10 @@ export class SignupReactiveFormComponent implements OnInit {
     this.userForm = this.fb.group({
       // firstName: ['', [Validators.required, Validators.minLength(3)]],
       // It works!
-      firstName: new FormControl('', {validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur'}),
+      firstName: new FormControl('', {
+        validators: [Validators.required, Validators.minLength(3)],
+        updateOn: 'blur'
+      }),
       // It doesn't work!, will work in future (Date: 20 Nov 2017)
       // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
       lastName: [
@@ -105,28 +124,34 @@ export class SignupReactiveFormComponent implements OnInit {
           Validators.required,
           Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
           Validators.email
-        ]
+        ],
+        // [CustomValidators.asyncEmailPromiseValidator]
       ],
       phone: '',
       notification: 'email',
       serviceLevel: [''],
+      // serviceLevel: ['', CustomValidators.serviceLevel],
+      // serviceLevel: [
+      //   '',
+      //   CustomValidators.serviceLevelRange(this.rMin, this.rMax)
+      // ],
       sendProducts: true
     });
   }
 
   private setFormValues() {
     this.userForm.setValue({
-      firstName: 'Vitaliy',
-      lastName: 'Zhyrytskyy',
-      email: 'vitaliy_zhyrytskyy@ukr.net',
-      sendProducts: false
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      email: this.user.email,
+      sendProducts: this.user.sendProducts
     });
   }
 
   private patchFormValues() {
     this.userForm.patchValue({
-      firstName: 'Vitaliy',
-      lastName: 'Zhyrytskyy'
+      firstName: this.user.firstName,
+      lastName: this.user.lastName
     });
   }
 }
