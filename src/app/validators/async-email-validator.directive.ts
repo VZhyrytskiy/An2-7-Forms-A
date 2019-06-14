@@ -7,6 +7,7 @@ import {
 
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
+import { CustomValidators } from './custom.validators';
 
 @Directive({
   selector:
@@ -23,27 +24,13 @@ export class AsyncEmailValidatorDirective implements Validator {
   validate(
     c: AbstractControl
   ): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> {
-    return this.validateEmailPromise(c.value);
+    return CustomValidators.asyncEmailPromiseValidator(c);
     // return this.validateEmailObservable(c.value)
     //   .pipe(
     //     debounceTime(1000),
     //     distinctUntilChanged(),
     //     first()
     //   );
-  }
-
-  private validateEmailPromise(email: string) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        if (email === 'existsemail@example.com') {
-          resolve({
-            asyncEmailInvalid: true
-          });
-        } else {
-          resolve(null);
-        }
-      }, 2000);
-    });
   }
 
   private validateEmailObservable(email: string) {
