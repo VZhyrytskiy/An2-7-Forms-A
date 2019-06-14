@@ -16,7 +16,6 @@ export class ServiceLevelDirective implements Validator {
   @Input() rMax: number;
 
   validate(c: AbstractControl): { [key: string]: boolean } | null {
-    console.log(this.rMax);
     return checkServiceLevel(c, this.rMin, this.rMax);
   }
 }
