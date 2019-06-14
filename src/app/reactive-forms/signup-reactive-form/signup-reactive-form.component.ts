@@ -6,7 +6,7 @@ import {
   Validators
 } from '@angular/forms';
 
-import { User } from './../../models/user';
+import { UserModel } from './../../models/user.model';
 import { CustomValidators } from './../../validators';
 
 @Component({
@@ -24,7 +24,15 @@ export class SignupReactiveFormComponent implements OnInit {
     'Poland',
     'Russia'
   ];
-  user: User = new User();
+  // data model
+  user: UserModel = new UserModel(
+    'Vitaliy',
+    'Zhyrytskyy',
+    'v.zhiritskiy@gmail.com',
+    false
+  );
+
+  // form model
   userForm: FormGroup;
   placeholder = {
     email: 'Email (required)',
@@ -117,17 +125,17 @@ export class SignupReactiveFormComponent implements OnInit {
 
   private setFormValues() {
     this.userForm.setValue({
-      firstName: 'Vitaliy',
-      lastName: 'Zhyrytskyy',
-      email: 'vitaliy_zhyrytskyy@ukr.net',
-      sendProducts: false
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      email: this.user.email,
+      sendProducts: this.user.sendProducts
     });
   }
 
   private patchFormValues() {
     this.userForm.patchValue({
-      firstName: 'Vitaliy',
-      lastName: 'Zhyrytskyy'
+      firstName: this.user.firstName,
+      lastName: this.user.lastName
     });
   }
 }
