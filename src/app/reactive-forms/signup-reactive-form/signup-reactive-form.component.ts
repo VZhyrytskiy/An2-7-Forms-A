@@ -24,6 +24,10 @@ export class SignupReactiveFormComponent implements OnInit {
     'Poland',
     'Russia'
   ];
+
+  rMin = 1;
+  rMax = 3;
+
   // data model
   user: UserModel = new UserModel(
     'Vitaliy',
@@ -100,7 +104,10 @@ export class SignupReactiveFormComponent implements OnInit {
     this.userForm = this.fb.group({
       // firstName: ['', [Validators.required, Validators.minLength(3)]],
       // It works!
-      firstName: new FormControl('', {validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur'}),
+      firstName: new FormControl('', {
+        validators: [Validators.required, Validators.minLength(3)],
+        updateOn: 'blur'
+      }),
       // It doesn't work!, will work in future (Date: 20 Nov 2017)
       // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
       lastName: [
@@ -118,7 +125,10 @@ export class SignupReactiveFormComponent implements OnInit {
       phone: '',
       notification: 'email',
       // serviceLevel: ['', CustomValidators.serviceLevel],
-      serviceLevel: ['', CustomValidators.serviceLevelRange(1, 3)],
+      serviceLevel: [
+        '',
+        CustomValidators.serviceLevelRange(this.rMin, this.rMax)
+      ],
       sendProducts: true
     });
   }
