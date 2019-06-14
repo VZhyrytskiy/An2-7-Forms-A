@@ -1,5 +1,8 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 
+// rxjs
+import { Observable } from 'rxjs';
+
 export class CustomValidators {
   static serviceLevel(c: AbstractControl): { [key: string]: boolean } | null {
     console.log('Validator: serviceLevel is called');
@@ -24,7 +27,26 @@ export class CustomValidators {
       return null;
     }
 
-    return { 'emailMatch': true };
+    return { emailMatch: true };
+  }
+
+  static asyncEmailPromiseValidator(
+    c: AbstractControl
+  ):
+    | Promise<{ [key: string]: any } | null> | Observable<{ [key: string]: any } | null> {
+    const email = c.value;
+
+    return new Promise(resolve => {
+      setTimeout(() => {
+        if (email === 'existsemail@example.com') {
+          resolve({
+            asyncEmailInvalid: true
+          });
+        } else {
+          resolve(null);
+        }
+      }, 2000);
+    });
   }
 }
 
