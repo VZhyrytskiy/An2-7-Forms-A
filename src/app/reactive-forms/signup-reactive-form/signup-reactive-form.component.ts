@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs';
 
 import { UserModel } from './../../models/user.model';
 import { CustomValidators } from './../../validators';
-import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signup-reactive-form',
@@ -77,6 +76,11 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     console.log(`Saved: ${JSON.stringify(this.userForm.value)}`);
     // Form value w/ disabled controls
     console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
+  }
+
+  onBlur() {
+    const emailControl = this.userForm.get('emailGroup.email');
+    this.setValidationMessage(emailControl, 'email');
   }
 
   private setNotification(notifyVia: string) {
@@ -217,9 +221,9 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
       .valueChanges.subscribe(value => this.setNotification(value));
 
     const emailControl = this.userForm.get('emailGroup.email');
-    const sub = emailControl.valueChanges
-      .pipe(startWith(''))
-      .subscribe(value => this.setValidationMessage(emailControl, 'email'));
+    const sub = emailControl.valueChanges.subscribe(value =>
+      this.setValidationMessage(emailControl, 'email')
+    );
     this.sub.add(sub);
   }
 }

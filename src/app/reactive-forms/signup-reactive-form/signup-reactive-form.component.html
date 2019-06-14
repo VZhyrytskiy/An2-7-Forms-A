@@ -66,7 +66,7 @@
                                 type="email"
                                 placeholder={{placeholder.email}}
                                 formControlName="email"
-                                asyncEmailValidator
+                                appAsyncEmailValidator
                                 (blur)="onBlur()" />
                            <span class="help-block" *ngIf="validationMessage">
                                 {{validationMessage}}
