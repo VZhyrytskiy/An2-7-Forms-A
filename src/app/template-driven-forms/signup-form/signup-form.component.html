@@ -126,7 +126,7 @@
                                     name="country">
                                 <option value="">Select a Country...</option>
                                 <option *ngFor="let country of countries"
-                                        value="{{country}}">{{country}}
+                                        [value]="country">{{country}}
                                 </option>
                             </select>
                         </div>
