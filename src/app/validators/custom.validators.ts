@@ -1,21 +1,21 @@
-import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 // rxjs
 import { Observable } from 'rxjs';
 
 export class CustomValidators {
-  static serviceLevel(c: AbstractControl): { [key: string]: boolean } | null {
+  static serviceLevel(c: AbstractControl): ValidationErrors | null {
     console.log('Validator: serviceLevel is called');
     return checkServiceLevel(c);
   }
 
   static serviceLevelRange(min: number, max: number): ValidatorFn {
-    return (c: AbstractControl): { [key: string]: boolean } | null => {
+    return (c: AbstractControl): ValidationErrors | null => {
       return checkServiceLevel(c, min, max);
     };
   }
 
-  static emailMatcher(c: AbstractControl): { [key: string]: boolean } | null {
+  static emailMatcher(c: AbstractControl): ValidationErrors | null {
     const emailControl = c.get('email');
     const emailConfirmControl = c.get('confirmEmail');
 
@@ -33,7 +33,7 @@ export class CustomValidators {
   static asyncEmailPromiseValidator(
     c: AbstractControl
   ):
-    | Promise<{ [key: string]: any } | null> | Observable<{ [key: string]: any } | null> {
+    | Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     const email = c.value;
 
     return new Promise(resolve => {
@@ -54,7 +54,7 @@ export function checkServiceLevel(
   c: AbstractControl,
   min: number = 1,
   max: number = 5
-): { [key: string]: boolean } | null {
+): ValidationErrors | null {
   if (
     c.value !== undefined &&
     (Number.isNaN(c.value) || c.value < min || c.value > max)
