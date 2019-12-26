@@ -29,6 +29,9 @@ export class AsyncEmailValidatorDirective implements Validator {
     //   .pipe(
     //     debounceTime(1000),
     //     distinctUntilChanged(),
+    // // The observable returned must be finite, meaning it must complete at some point.
+    // // To convert an infinite observable into a finite one, pipe the observable through a
+    // // filtering operator such as first, last, take, or takeUntil
     //     first()
     //   );
   }
