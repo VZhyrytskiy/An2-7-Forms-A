@@ -18,7 +18,7 @@ export class CustomValidators {
   static asyncEmailPromiseValidator(
     c: AbstractControl
   ):
-    | Promise<{ [key: string]: any } | null> | Observable<{ [key: string]: any } | null> {
+    | Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     const email = c.value;
 
     return new Promise(resolve => {
