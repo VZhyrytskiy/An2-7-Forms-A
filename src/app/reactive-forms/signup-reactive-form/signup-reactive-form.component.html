@@ -1,5 +1,5 @@
 <div class="panel panel-primary">
-    <div class="panel-heading">
+<div class="panel-heading">
         Sign Up!
     </div>
 
@@ -199,7 +199,7 @@
                                         formControlName="country">
                                     <option value="">Select a Country...</option>
                                     <option *ngFor="let country of countries"
-                                      value="{{country}}">{{country}}</option>
+                                    [value]="country">{{country}}</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
