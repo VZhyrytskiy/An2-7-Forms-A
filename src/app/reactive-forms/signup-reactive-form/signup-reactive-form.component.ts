@@ -72,7 +72,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   get addresses(): FormArray {
-    return <FormArray>this.userForm.get('addresses');
+    return this.userForm.get('addresses') as FormArray;
   }
 
   onSave() {
