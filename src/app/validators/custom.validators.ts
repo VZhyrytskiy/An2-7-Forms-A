@@ -15,7 +15,7 @@ export class CustomValidators {
     };
   }
 
-  static emailMatcher(c: AbstractControl): { [key: string]: boolean } | null {
+  static emailMatcher(c: AbstractControl): ValidationErrors | null {
     const emailControl = c.get('email');
     const emailConfirmControl = c.get('confirmEmail');
 
