@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
+import { Validator, AbstractControl, NG_VALIDATORS, ValidationErrors } from '@angular/forms';
 
 import { checkServiceLevel } from './custom.validators';
 
@@ -13,7 +13,7 @@ import { checkServiceLevel } from './custom.validators';
 })
 export class ServiceLevelDirective implements Validator {
 
-  validate(c: AbstractControl): { [key: string]: boolean } | null {
+  validate(c: AbstractControl): ValidationErrors | null {
     return checkServiceLevel(c, 1, 3);
   }
 }
