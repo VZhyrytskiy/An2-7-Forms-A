@@ -19,15 +19,7 @@ import { CustomValidators } from './../../validators';
   styleUrls: ['./signup-reactive-form.component.css']
 })
 export class SignupReactiveFormComponent implements OnInit, OnDestroy {
-  countries: Array<string> = [
-    'Ukraine',
-    'Armenia',
-    'Belarus',
-    'Hungary',
-    'Kazakhstan',
-    'Poland',
-    'Russia'
-  ];
+
 
   rMin = 1;
   rMax = 3;
@@ -200,20 +192,12 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
       //   CustomValidators.serviceLevelRange(this.rMin, this.rMax)
       // ],
       sendProducts: true,
-      // addresses: this.buildAddress()
       addresses: this.fb.array([this.buildAddress()])
     });
   }
 
-  private buildAddress(): FormGroup {
-    return this.fb.group({
-      addressType: 'home',
-      country: '',
-      city: '',
-      zip: '',
-      street1: '',
-      street2: ''
-    });
+  private buildAddress(): FormControl {
+    return this.fb.control('');
   }
 
   private setFormValues() {
@@ -252,5 +236,6 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(1000))
       .subscribe(value => this.setValidationMessage(emailControl, 'email'));
     this.sub.add(sub);
+
   }
 }
