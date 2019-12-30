@@ -93,6 +93,10 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     this.setValidationMessage(emailControl, 'email');
   }
 
+  onRemoveAddress(index: number): void {
+    this.addresses.removeAt(index);
+  }
+
   private setNotification(notifyVia: string) {
     const controls = new Map();
     controls.set('phoneControl', this.userForm.get('phone'));

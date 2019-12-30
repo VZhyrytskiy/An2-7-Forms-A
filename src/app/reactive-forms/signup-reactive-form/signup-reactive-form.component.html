@@ -169,12 +169,12 @@
 
 
                 <div *ngIf="userForm.get('sendProducts').value">
-                    
+
                     <div formArrayName="addresses">
                       <div *ngFor="let address of addresses.controls; let i = index" [formGroupName]="i">
                         <div class="form-group" >
                             <label class="col-md-2 control-label">Address Type</label>
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                     <label class="radio-inline">
                                         <input type="radio" id="{{'addressType1Id' + i}}" value="home"
                                               formControlName="addressType">Home
@@ -187,6 +187,9 @@
                                         <input type="radio" id="{{'addressType3Id' + i}}" value="other"
                                               formControlName="addressType">Other
                                     </label>
+                            </div>
+                            <div class="col-md-1 text-right" *ngIf="i>0">
+                              <button class="btn btn-danger" (click)="onRemoveAddress(i)">X</button>
                             </div>
                         </div>
 
