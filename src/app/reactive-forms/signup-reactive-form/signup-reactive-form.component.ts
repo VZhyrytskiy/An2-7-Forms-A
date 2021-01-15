@@ -53,6 +53,10 @@ export class SignupReactiveFormComponent implements OnInit {
     return this.userForm.get('email');
   }
 
+  get phone(): AbstractControl {
+    return this.userForm.get('phone');
+  }
+
   ngOnInit() {
     this.buildForm();
   }
@@ -67,8 +71,8 @@ export class SignupReactiveFormComponent implements OnInit {
   }
 
   onSetNotification(notifyVia: string) {
-    const phoneControl = this.userForm.get('phone');
-    const emailControl = this.userForm.get('email');
+    const phoneControl = this.phone;
+    const emailControl = this.email;
 
     if (notifyVia === 'text') {
       phoneControl.setValidators(Validators.required);
