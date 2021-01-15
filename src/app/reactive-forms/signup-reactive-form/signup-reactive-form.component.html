@@ -18,7 +18,8 @@
                                id="firstNameId"
                                type="text"
                                placeholder="First Name (required)"
-                               formControlName="firstName" />
+                               formControlName="firstName"
+                               (blur)="onBlur($event)" />
                         <span class="help-block" *ngIf="validationMessagesMap.get('firstName').message">
                                 {{validationMessagesMap.get('firstName').message}}
                         </span>
@@ -36,7 +37,8 @@
                                id="lastNameId"
                                type="text"
                                placeholder="Last Name (required)"
-                               formControlName="lastName" />
+                               formControlName="lastName"
+                               (blur)="onBlur($event)" />
                         <span class="help-block" *ngIf="validationMessagesMap.get('lastName').message">
                                 {{validationMessagesMap.get('lastName').message}}
                         </span>
@@ -56,7 +58,8 @@
                                type="email"
                                placeholder={{placeholder.email}}
                                formControlName="email"
-                               appAsyncEmailValidator />
+                               appAsyncEmailValidator
+                               (blur)="onBlur($event)" />
                                <span class="help-block" *ngIf="validationMessagesMap.get('email').message">
                                 {{validationMessagesMap.get('email').message}}
                            </span>
@@ -73,7 +76,8 @@
                                 id="confirmEmailId"
                                 type="email"
                                 placeholder={{placeholder.confirmEmail}}
-                                formControlName="confirmEmail" />
+                                formControlName="confirmEmail"
+                                (blur)="onBlur($event)" />
                           <span class="help-block" *ngIf="validationMessagesMap.get('confirmEmail').message ">
                               {{validationMessagesMap.get('confirmEmail').message}}
                           </span>
@@ -94,7 +98,8 @@
                                id="phoneId"
                                type="tel"
                                placeholder={{placeholder.phone}}
-                               formControlName="phone" />
+                               formControlName="phone"
+                               (blur)="onBlur($event)" />
                         <span class="help-block" *ngIf="validationMessagesMap.get('phone').message">
                             {{validationMessagesMap.get('phone').message}}
                         </span>
@@ -127,6 +132,7 @@
                                id="serviceLevelId"
                                type="number"
                                formControlName="serviceLevel"
+                               (blur)="onBlur($event)"
                                appServiceLevelValidator [rMin]="rMin" [rMax]="rMax" />
                         <span class="help-block" *ngIf="validationMessagesMap.get('serviceLevel').message">
                             {{validationMessagesMap.get('serviceLevel').message}}

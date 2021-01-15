@@ -130,6 +130,10 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     return this.userForm.get('notification');
   }
 
+  get sendProducts(): AbstractControl {
+    return this.userForm.get('sendProducts');
+  }
+
   ngOnInit() {
     this.buildForm();
     this.watchValueChanges();
