@@ -234,7 +234,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
       // It works!
       firstName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)],
-        updateOn: 'blur'
+        updateOn: 'change'
       }),
       // It doesn't work!, will work in future (Date: 20 Nov 2017)
       // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
