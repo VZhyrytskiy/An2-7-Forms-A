@@ -33,7 +33,7 @@ export class SignupReactiveFormComponent implements OnInit {
   }
 
   get email(): AbstractControl {
-    return this.userForm.get('emailGroup.email');
+    return this.userForm.get('email');
   }
 
   constructor() {}
