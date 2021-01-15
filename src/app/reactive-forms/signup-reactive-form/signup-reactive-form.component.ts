@@ -4,7 +4,8 @@ import {
   FormGroup,
   FormControl,
   FormBuilder,
-  Validators
+  Validators,
+  AbstractControlOptions
 } from '@angular/forms';
 
 import { UserModel } from './../../models/user.model';
@@ -55,8 +56,16 @@ export class SignupReactiveFormComponent implements OnInit {
     return this.userForm.get('lastName');
   }
 
+  get emailGroup(): AbstractControl {
+    return this.userForm.get('emailGroup');
+  }
+
   get email(): AbstractControl {
-    return this.userForm.get('email');
+    return this.userForm.get('emailGroup.email');
+  }
+
+  get confirmEmail(): AbstractControl {
+    return this.userForm.get('emailGroup.confirmEmail');
   }
 
   get phone(): AbstractControl {
@@ -83,13 +92,10 @@ export class SignupReactiveFormComponent implements OnInit {
 
   onSetNotification(notifyVia: string) {
     const controls = new Map();
-    controls.set('phoneControl', this.userForm.get('phone'));
-    controls.set('emailGroup', this.userForm.get('emailGroup'));
-    controls.set('emailControl', this.userForm.get('emailGroup.email'));
-    controls.set(
-      'confirmEmailControl',
-      this.userForm.get('emailGroup.confirmEmail')
-    );
+    controls.set('phoneControl', this.phone);
+    controls.set('emailGroup', this.emailGroup);
+    controls.set('emailControl', this.email);
+    controls.set('confirmEmailControl', this.confirmEmail);
 
     if (notifyVia === 'text') {
       controls.get('phoneControl').setValidators(Validators.required);
@@ -173,7 +179,7 @@ export class SignupReactiveFormComponent implements OnInit {
           ],
           confirmEmail: ['', Validators.required]
         },
-        { validator: CustomValidators.emailMatcher }
+        { validator: CustomValidators.emailMatcher } as AbstractControlOptions
       ),
       phone: '',
       notification: 'email',
