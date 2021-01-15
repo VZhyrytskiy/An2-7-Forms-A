@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormGroup,
   FormControl,
   FormBuilder,
@@ -35,6 +36,18 @@ export class SignupReactiveFormComponent implements OnInit {
   userForm: FormGroup;
 
   constructor(private fb: FormBuilder) {}
+
+  get firstName(): AbstractControl {
+    return this.userForm.get('firstName');
+  }
+
+  get lastName(): AbstractControl {
+    return this.userForm.get('lastName');
+  }
+
+  get email(): AbstractControl {
+    return this.userForm.get('email');
+  }
 
   ngOnInit() {
     this.buildForm();
