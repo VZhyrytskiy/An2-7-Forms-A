@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormGroup,
   FormControl,
   FormBuilder,
@@ -41,6 +42,26 @@ export class SignupReactiveFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {}
 
+  get firstName(): AbstractControl {
+    return this.userForm.get('firstName');
+  }
+
+  get lastName(): AbstractControl {
+    return this.userForm.get('lastName');
+  }
+
+  get email(): AbstractControl {
+    return this.userForm.get('email');
+  }
+
+  get phone(): AbstractControl {
+    return this.userForm.get('phone');
+  }
+
+  get serviceLevel(): AbstractControl {
+    return this.userForm.get('serviceLevel');
+  }
+
   ngOnInit() {
     this.buildForm();
     // this.createForm();
@@ -56,8 +77,8 @@ export class SignupReactiveFormComponent implements OnInit {
   }
 
   onSetNotification(notifyVia: string) {
-    const phoneControl = this.userForm.get('phone');
-    const emailControl = this.userForm.get('email');
+    const phoneControl = this.phone;
+    const emailControl = this.email;
 
     if (notifyVia === 'text') {
       phoneControl.setValidators(Validators.required);
