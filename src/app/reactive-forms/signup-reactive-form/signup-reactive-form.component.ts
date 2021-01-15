@@ -1,5 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators,
+  AbstractControlOptions
+} from '@angular/forms';
+
 import { Subscription } from 'rxjs';
 
 import { UserModel } from './../../models/user.model';
@@ -22,7 +30,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   ];
 
   rMin = 1;
-  rMax = 3;
+  rMax = 4;
 
   // data model
   user: UserModel = new UserModel(
@@ -46,6 +54,38 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder
   ) { }
 
+  get firstName(): AbstractControl {
+    return this.userForm.get('firstName');
+  }
+
+  get lastName(): AbstractControl {
+    return this.userForm.get('lastName');
+  }
+
+  get emailGroup(): AbstractControl {
+    return this.userForm.get('emailGroup');
+  }
+
+  get email(): AbstractControl {
+    return this.userForm.get('emailGroup.email');
+  }
+
+  get confirmEmail(): AbstractControl {
+    return this.userForm.get('emailGroup.confirmEmail');
+  }
+
+  get phone(): AbstractControl {
+    return this.userForm.get('phone');
+  }
+
+  get serviceLevel(): AbstractControl {
+    return this.userForm.get('serviceLevel');
+  }
+
+  get notification(): AbstractControl {
+    return this.userForm.get('notification');
+  }
+
   ngOnInit() {
     this.buildForm();
     this.watchValueChanges();
@@ -66,13 +106,10 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
 
   private setNotification(notifyVia: string) {
     const controls = new Map();
-    controls.set('phoneControl', this.userForm.get('phone'));
-    controls.set('emailGroup', this.userForm.get('emailGroup'));
-    controls.set('emailControl', this.userForm.get('emailGroup.email'));
-    controls.set(
-      'confirmEmailControl',
-      this.userForm.get('emailGroup.confirmEmail')
-    );
+    controls.set('phoneControl', this.phone);
+    controls.set('emailGroup', this.emailGroup);
+    controls.set('emailControl', this.email);
+    controls.set('confirmEmailControl', this.confirmEmail);
 
     if (notifyVia === 'text') {
       controls.get('phoneControl').setValidators(Validators.required);
@@ -156,7 +193,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
           ],
           confirmEmail: ['', Validators.required]
         },
-        { validator: CustomValidators.emailMatcher }
+        { validator: CustomValidators.emailMatcher } as AbstractControlOptions
       ),
       phone: '',
       notification: 'email',
@@ -187,7 +224,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   private watchValueChanges() {
-    this.sub = this.userForm.get('notification').valueChanges
+    this.sub = this.notification.valueChanges
       // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));
   }
