@@ -117,7 +117,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
         (control, index) => {
           if (index !== 'phoneControl') {
             control.clearValidators();
-            control.clearAsyncValidators()
+            control.clearAsyncValidators();
           }
         }
       );
