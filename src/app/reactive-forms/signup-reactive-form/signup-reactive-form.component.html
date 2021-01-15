@@ -115,7 +115,7 @@
                  </div>
 
                  <div class="form-group"
-                    [ngClass]="{'has-error': (userForm.get('serviceLevel').touched || userForm.get('serviceLevel').dirty) && !userForm.get('serviceLevel').valid }">
+                    [ngClass]="{'has-error': (serviceLevel.touched || serviceLevel.dirty) && !serviceLevel.valid }">
                     <label class="col-md-2 control-label"
                         for="serviceLevelId">Service Level</label>
 
@@ -124,8 +124,8 @@
                                id="serviceLevelId"
                                type="number"
                                formControlName="serviceLevel" />
-                        <span class="help-block" *ngIf="(userForm.get('serviceLevel').touched || userForm.get('serviceLevel').dirty) && userForm.get('serviceLevel').errors">
-                            <span *ngIf="userForm.get('serviceLevel').hasError('serviceLevel')">
+                        <span class="help-block" *ngIf="(serviceLevel.touched || serviceLevel.dirty) && serviceLevel.errors">
+                            <span *ngIf="serviceLevel.hasError('serviceLevel')">
                                 Please enter correct number from 1 to 5.
                             </span>
                         </span>

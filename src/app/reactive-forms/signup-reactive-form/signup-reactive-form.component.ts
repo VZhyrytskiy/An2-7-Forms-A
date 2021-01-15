@@ -58,6 +58,10 @@ export class SignupReactiveFormComponent implements OnInit {
     return this.userForm.get('phone');
   }
 
+  get serviceLevel(): AbstractControl {
+    return this.userForm.get('serviceLevel');
+  }
+
   ngOnInit() {
     this.buildForm();
   }
