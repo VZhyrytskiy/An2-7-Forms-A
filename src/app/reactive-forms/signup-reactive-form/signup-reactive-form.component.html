@@ -9,7 +9,7 @@
               [formGroup]="userForm">
             <fieldset>
                 <div class="form-group"
-                     [ngClass]="{'has-error': (userForm.get('firstName').touched || userForm.get('firstName').dirty) && !userForm.get('firstName').valid }">
+                     [ngClass]="{'has-error': (firstName.touched || firstName.dirty) && !firstName.valid }">
                     <label class="col-md-2 control-label"
                            for="firstNameId">First Name</label>
 
@@ -19,11 +19,11 @@
                                type="text"
                                placeholder="First Name (required)"
                                formControlName="firstName" />
-                        <span class="help-block" *ngIf="(userForm.get('firstName').touched || userForm.get('firstName').dirty) && userForm.get('firstName').errors">
-                                <span *ngIf="userForm.get('firstName').hasError('required')">
+                        <span class="help-block" *ngIf="(firstName.touched || firstName.dirty) && firstName.errors">
+                                <span *ngIf="firstName.hasError('required')">
                                       Please enter your first name.
                                 </span>
-                                <span *ngIf="userForm.get('firstName').hasError('minlength')">
+                                <span *ngIf="firstName.hasError('minlength')">
                                       The first name must be longer than 3 characters.
                                 </span>
                         </span>
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="form-group"
-                     [ngClass]="{'has-error': (userForm.get('lastName').touched || userForm.get('lastName').dirty) && !userForm.get('lastName').valid }">
+                     [ngClass]="{'has-error': (lastName.touched || lastName.dirty) && !lastName.valid }">
                     <label class="col-md-2 control-label"
                         for="lastNameId">Last Name</label>
 
@@ -42,8 +42,8 @@
                                type="text"
                                placeholder="Last Name (required)"
                                formControlName="lastName" />
-                        <span class="help-block" *ngIf="(userForm.get('lastName').touched || userForm.get('lastName').dirty) && userForm.get('lastName').errors">
-                                <span *ngIf="userForm.get('lastName').hasError('required')">
+                        <span class="help-block" *ngIf="(lastName.touched || lastName.dirty) && lastName.errors">
+                                <span *ngIf="lastName.hasError('required')">
                                             Please enter your last name.
                                 </span>
                         </span>
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="form-group"
-                     [ngClass]="{'has-error': (userForm.get('email').touched || userForm.get('email').dirty) && userForm.get('email').invalid }">
+                     [ngClass]="{'has-error': (email.touched || email.dirty) && email.invalid }">
                     <label class="col-md-2 control-label"
                         for="emailId">Email</label>
 
@@ -62,14 +62,14 @@
                                type="email"
                                placeholder={{placeholder.email}}
                                formControlName="email" />
-                        <span class="help-block" *ngIf="(userForm.get('email').touched || userForm.get('email').dirty) && userForm.get('email').errors">
-                                <span *ngIf="userForm.get('email').hasError('required')">
+                        <span class="help-block" *ngIf="(email.touched || email.dirty) && email.errors">
+                                <span *ngIf="email.hasError('required')">
                                    Please enter your email address.
                                </span>
-                               <span *ngIf="userForm.get('email').hasError('pattern')">
+                               <span *ngIf="email.hasError('pattern')">
                                      Please enter a valid email address.
                                </span>
-                               <span *ngIf="userForm.get('email').hasError('email')">
+                               <span *ngIf="email.hasError('email')">
                                      Please enter a valid email address.
                                </span>
                         </span>
@@ -78,7 +78,7 @@
                 </div>
 
                 <div class="form-group"
-                    [ngClass]="{'has-error': (userForm.get('phone').touched || userForm.get('phone').dirty) && userForm.get('phone').invalid }">
+                    [ngClass]="{'has-error': (phone.touched || phone.dirty) && phone.invalid }">
                     <label class="col-md-2 control-label"
                         for="phoneId">Phone</label>
 
@@ -88,8 +88,8 @@
                                type="tel"
                                placeholder={{placeholder.phone}}
                                formControlName="phone" />
-                        <span class="help-block" *ngIf="(userForm.get('phone').touched || userForm.get('phone').dirty) && userForm.get('phone').errors">
-                            <span *ngIf="userForm.get('phone').hasError('required')">
+                        <span class="help-block" *ngIf="(phone.touched || phone.dirty) && phone.errors">
+                            <span *ngIf="phone.hasError('required')">
                                 Please enter your phone number.
                             </span>
                         </span>
