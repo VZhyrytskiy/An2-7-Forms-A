@@ -9,7 +9,7 @@
               [formGroup]="userForm">
             <fieldset>
                 <div class="form-group"
-                     [ngClass]="{'has-error': (userForm.get('firstName').touched || userForm.get('firstName').dirty) && !userForm.get('firstName').valid }">
+                     [ngClass]="{'has-error': validationMessagesMap.get('firstName').message }">
                     <label class="col-md-2 control-label"
                            for="firstNameId">First Name</label>
 
@@ -18,21 +18,17 @@
                                id="firstNameId"
                                type="text"
                                placeholder="First Name (required)"
-                               formControlName="firstName" />
-                        <span class="help-block" *ngIf="(userForm.get('firstName').touched || userForm.get('firstName').dirty) && userForm.get('firstName').errors">
-                                <span *ngIf="userForm.get('firstName').hasError('required')">
-                                      Please enter your first name.
-                                </span>
-                                <span *ngIf="userForm.get('firstName').hasError('minlength')">
-                                      The first name must be longer than 3 characters.
-                                </span>
+                               formControlName="firstName"
+                               (blur)="onBlur($event)" />
+                        <span class="help-block" *ngIf="validationMessagesMap.get('firstName').message">
+                                {{validationMessagesMap.get('firstName').message}}
                         </span>
 
                     </div>
                 </div>
 
                 <div class="form-group"
-                     [ngClass]="{'has-error': (userForm.get('lastName').touched || userForm.get('lastName').dirty) && !userForm.get('lastName').valid }">
+                     [ngClass]="{'has-error': validationMessagesMap.get('lastName').message }">
                     <label class="col-md-2 control-label"
                         for="lastNameId">Last Name</label>
 
@@ -41,44 +37,38 @@
                                id="lastNameId"
                                type="text"
                                placeholder="Last Name (required)"
-                               formControlName="lastName" />
-                        <span class="help-block" *ngIf="(userForm.get('lastName').touched || userForm.get('lastName').dirty) && userForm.get('lastName').errors">
-                                <span *ngIf="userForm.get('lastName').hasError('required')">
-                                            Please enter your last name.
-                                </span>
+                               formControlName="lastName"
+                               (blur)="onBlur($event)" />
+                        <span class="help-block" *ngIf="validationMessagesMap.get('lastName').message">
+                                {{validationMessagesMap.get('lastName').message}}
                         </span>
 
                     </div>
                 </div>
 
                 <div formGroupName="emailGroup"
-                     [ngClass]="{'has-error': userForm.get('emailGroup').errors}">
-                  <!--Email -->
-                  <div class="form-group"
-                      [ngClass]="{'has-error': validationMessage}">
-
-                      <label class="col-md-2 control-label"
-                          for="emailId">Email</label>
-
-                      <div class="col-md-8">
-                          <input class="form-control"
-                                id="emailId"
-                                type="email"
-                                placeholder={{placeholder.email}}
-                                formControlName="email"
-                                appAsyncEmailValidator
-                                (blur)="onBlur()" />
-                           <span class="help-block" *ngIf="validationMessage">
-                                {{validationMessage}}
+                     [ngClass]="{'has-error': validationMessagesMap.get('emailGroup').message}">
+                    <!--Email -->
+                    <div class="form-group"
+                         [ngClass]="{'has-error': validationMessagesMap.get('email').message }">
+                    <label class="col-md-2 control-label" for="emailId">Email</label>
+                    <div class="col-md-8">
+                        <input class="form-control"
+                               id="emailId"
+                               type="email"
+                               placeholder={{placeholder.email}}
+                               formControlName="email"
+                               appAsyncEmailValidator
+                               (blur)="onBlur($event)" />
+                               <span class="help-block" *ngIf="validationMessagesMap.get('email').message">
+                                {{validationMessagesMap.get('email').message}}
                            </span>
                       </div>
                     </div>
 
                     <!-- ConfirmEmail-->
                     <div class="form-group"
-                      [ngClass]="{'has-error': (userForm.get('emailGroup.confirmEmail').touched ||
-                                                userForm.get('emailGroup.confirmEmail').dirty) &&
-                                                userForm.get('emailGroup.confirmEmail').invalid }">
+                      [ngClass]="{'has-error': validationMessagesMap.get('confirmEmail').message }">
                       <label class="col-md-2 control-label" for="confirmEmailId">Confirm Email</label>
 
                       <div class="col-md-8">
@@ -86,24 +76,20 @@
                                 id="confirmEmailId"
                                 type="email"
                                 placeholder={{placeholder.confirmEmail}}
-                                formControlName="confirmEmail" />
-                          <span class="help-block" *ngIf="(userForm.get('emailGroup.confirmEmail').touched ||
-                                                          userForm.get('emailGroup.confirmEmail').dirty) &&
-                                                          (userForm.get('emailGroup.confirmEmail').errors ||
-                                                          userForm.get('emailGroup').errors) ">
-                              <span *ngIf="userForm.get('emailGroup.confirmEmail').hasError('required')">
-                                  Please confirm your email address.
-                              </span>
-                              <span *ngIf="userForm.get('emailGroup').hasError('emailMatch')">
-                                  The confirmation does not match the email address.
-                              </span>
+                                formControlName="confirmEmail"
+                                (blur)="onBlur($event)" />
+                          <span class="help-block" *ngIf="validationMessagesMap.get('confirmEmail').message ">
+                              {{validationMessagesMap.get('confirmEmail').message}}
+                          </span>
+                          <span class="help-block" *ngIf="validationMessagesMap.get('emailGroup').message">
+                            {{validationMessagesMap.get('emailGroup').message}}
                           </span>
                       </div>
                     </div>
                 </div>
 
                 <div class="form-group"
-                    [ngClass]="{'has-error': (userForm.get('phone').touched || userForm.get('phone').dirty) && userForm.get('phone').invalid }">
+                    [ngClass]="{'has-error': validationMessagesMap.get('phone').message }">
                     <label class="col-md-2 control-label"
                         for="phoneId">Phone</label>
 
@@ -112,11 +98,10 @@
                                id="phoneId"
                                type="tel"
                                placeholder={{placeholder.phone}}
-                               formControlName="phone" />
-                        <span class="help-block" *ngIf="(userForm.get('phone').touched || userForm.get('phone').dirty) && userForm.get('phone').errors">
-                            <span *ngIf="userForm.get('phone').hasError('required')">
-                                Please enter your phone number.
-                            </span>
+                               formControlName="phone"
+                               (blur)="onBlur($event)" />
+                        <span class="help-block" *ngIf="validationMessagesMap.get('phone').message">
+                            {{validationMessagesMap.get('phone').message}}
                         </span>
                     </div>
                 </div>
@@ -138,7 +123,7 @@
                  </div>
 
                  <div class="form-group"
-                    [ngClass]="{'has-error': (userForm.get('serviceLevel').touched || userForm.get('serviceLevel').dirty) && !userForm.get('serviceLevel').valid }">
+                    [ngClass]="{'has-error': validationMessagesMap.get('serviceLevel').message }">
                     <label class="col-md-2 control-label"
                         for="serviceLevelId">Service Level</label>
 
@@ -147,11 +132,10 @@
                                id="serviceLevelId"
                                type="number"
                                formControlName="serviceLevel"
-                               appServiceLevelValidator rMin="{{rMin}}" rMax="{{rMax}}"/>
-                        <span class="help-block" *ngIf="(userForm.get('serviceLevel').touched || userForm.get('serviceLevel').dirty) && userForm.get('serviceLevel').errors">
-                            <span *ngIf="userForm.get('serviceLevel').hasError('serviceLevel')">
-                                Please enter correct number from {{rMin}} to {{rMax}}.
-                            </span>
+                               (blur)="onBlur($event)"
+                               appServiceLevelValidator [rMin]="rMin" [rMax]="rMax" />
+                        <span class="help-block" *ngIf="validationMessagesMap.get('serviceLevel').message">
+                            {{validationMessagesMap.get('serviceLevel').message}}
                         </span>
                     </div>
                 </div>
@@ -168,8 +152,7 @@
                 </div>
 
 
-                <div *ngIf="userForm.get('sendProducts').value">
-
+                <div *ngIf="sendProducts.value">
                     <div formArrayName="addresses">
                       <div *ngFor="let address of addresses.controls; let i = index" [formGroupName]="i">
                         <div class="form-group" >
