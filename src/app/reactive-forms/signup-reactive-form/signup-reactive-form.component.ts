@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
+  AbstractControl,
   FormGroup,
   FormControl,
   FormBuilder,
   Validators,
-  AbstractControl
+  AbstractControlOptions
 } from '@angular/forms';
+
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -29,7 +31,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   ];
 
   rMin = 1;
-  rMax = 3;
+  rMax = 4;
 
   // data model
   user: UserModel = new UserModel(
@@ -41,7 +43,51 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
 
   // form model
   userForm: FormGroup;
-  validationMessage: string;
+
+  // для удобства меп включает все контроллы,
+  // даже если у них нет валидаторов
+  validationMessagesMap = new Map([
+    ['firstName', {
+      message: '', // <== сформированное сообщение для пользователя
+      required: 'Please enter your first name.',
+      minlength: 'The first name must be longer than 3 characters.'
+    }],
+    ['lastName', {
+      message: '',
+      required: 'Please enter your last name.'
+    }],
+    ['email', {
+      message: '',
+      required: 'Please enter your email address.',
+      pattern: 'Please enter a valid email address.',
+      email: 'Please enter a valid email address.',
+      asyncEmailInvalid:
+        'This email already exists. Please enter other email address.'
+    }],
+    ['confirmEmail', {
+      message: '',
+      required: 'Please confirm your email address.'
+    }],
+    ['emailGroup', {
+      message: '',
+      emailMatch: 'The confirmation does not match the email address.'
+    }],
+    ['phone', {
+      message: '',
+      required: 'Please enter your phone number.'
+    }],
+    ['serviceLevel', {
+      message: '',
+      serviceLevel: `Please enter correct number from ${this.rMin} to ${this.rMax}.`
+    }],
+    ['notification', {
+      message: ''
+    }],
+    ['sendProducts', {
+      message: ''
+    }]
+  ]);
+
   placeholder = {
     email: 'Email (required)',
     confirmEmail: 'Confirm Email (required)',
@@ -49,17 +95,45 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   };
 
   private sub: Subscription;
-  private validationMessagesMap = {
-    email: {
-      required: 'Please enter your email address.',
-      pattern: 'Please enter a valid email address.',
-      email: 'Please enter a valid email address.',
-      asyncEmailInvalid:
-        'This email already exists. Please enter other email address.'
-    }
-  };
+
 
   constructor(private fb: FormBuilder) {}
+
+  get firstName(): AbstractControl {
+    return this.userForm.get('firstName');
+  }
+
+  get lastName(): AbstractControl {
+    return this.userForm.get('lastName');
+  }
+
+  get emailGroup(): AbstractControl {
+    return this.userForm.get('emailGroup');
+  }
+
+  get email(): AbstractControl {
+    return this.userForm.get('emailGroup.email');
+  }
+
+  get confirmEmail(): AbstractControl {
+    return this.userForm.get('emailGroup.confirmEmail');
+  }
+
+  get phone(): AbstractControl {
+    return this.userForm.get('phone');
+  }
+
+  get serviceLevel(): AbstractControl {
+    return this.userForm.get('serviceLevel');
+  }
+
+  get notification(): AbstractControl {
+    return this.userForm.get('notification');
+  }
+
+  get sendProducts(): AbstractControl {
+    return this.userForm.get('sendProducts');
+  }
 
   ngOnInit() {
     this.buildForm();
@@ -79,20 +153,18 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
   }
 
-  onBlur() {
-    const emailControl = this.userForm.get('emailGroup.email');
-    this.setValidationMessage(emailControl, 'email');
+  // перезапуск валидации контрола на событие blur
+  onBlur(event) {
+    const controlName = event.target.getAttribute('formControlName');
+    this.setValidationMessages(controlName);
   }
 
   private setNotification(notifyVia: string) {
     const controls = new Map();
-    controls.set('phoneControl', this.userForm.get('phone'));
-    controls.set('emailGroup', this.userForm.get('emailGroup'));
-    controls.set('emailControl', this.userForm.get('emailGroup.email'));
-    controls.set(
-      'confirmEmailControl',
-      this.userForm.get('emailGroup.confirmEmail')
-    );
+    controls.set('phoneControl', this.phone);
+    controls.set('emailGroup', this.emailGroup);
+    controls.set('emailControl', this.email);
+    controls.set('confirmEmailControl', this.confirmEmail);
 
     if (notifyVia === 'text') {
       controls.get('phoneControl').setValidators(Validators.required);
@@ -131,6 +203,18 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     controls.forEach(control => control.updateValueAndValidity());
   }
 
+  private buildValidationMessages(controlName: string) {
+    // const c: AbstractControl = this.controls.get(controlName);
+    const c: AbstractControl = this[controlName]; // вызов гетера
+    this.validationMessagesMap.get(controlName).message = '';
+
+    if ((c.touched || c.dirty) && c.invalid && c.errors) {
+      this.validationMessagesMap.get(controlName).message = Object.keys(c.errors)
+        .map(key => this.validationMessagesMap.get(controlName)[key])
+        .join(' ');
+    }
+  }
+
   private createForm() {
     this.userForm = new FormGroup({
       firstName: new FormControl('', {
@@ -155,7 +239,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
       // It works!
       firstName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)],
-        updateOn: 'blur'
+        updateOn: 'change'
       }),
       // It doesn't work!, will work in future (Date: 20 Nov 2017)
       // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
@@ -176,7 +260,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
           ],
           confirmEmail: ['', Validators.required]
         },
-        { validator: CustomValidators.emailMatcher }
+        { validator: CustomValidators.emailMatcher } as AbstractControlOptions
       ),
       phone: '',
       notification: 'email',
@@ -211,13 +295,19 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setValidationMessage(c: AbstractControl, controlName: string) {
-    this.validationMessage = '';
+  private setValidationMessages(controlName?: string) {
+    // валидация для заданого контрола,
+    // например для события blur
+    if (controlName) {
+      this.buildValidationMessages(controlName);
+    }
 
-    if ((c.touched || c.dirty) && c.errors) {
-      this.validationMessage = Object.keys(c.errors)
-        .map(key => this.validationMessagesMap[controlName][key])
-        .join(' ');
+    // валидация для всех контролов,
+    // например при изменении чего-либо на форме
+    else {
+      this.validationMessagesMap.forEach((control, cntrlName) => {
+        this.buildValidationMessages(cntrlName);
+      });
     }
   }
 
@@ -229,14 +319,15 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   private watchValueChanges() {
-    this.sub = this.userForm
-      .get('notification')
-      .valueChanges.subscribe(value => this.setNotification(value));
+    this.sub = this.notification.valueChanges
+      // .subscribe(value => console.log(value));
+      .subscribe(value => this.setNotification(value));
 
-    const emailControl = this.userForm.get('emailGroup.email');
-    const sub = emailControl.valueChanges
-      .pipe(debounceTime(1000))
-      .subscribe(value => this.setValidationMessage(emailControl, 'email'));
+    const sub = this.userForm.valueChanges
+    .pipe(debounceTime(1000) )
+    .subscribe(ignorValue =>
+        this.setValidationMessages()
+    );
     this.sub.add(sub);
   }
 }
