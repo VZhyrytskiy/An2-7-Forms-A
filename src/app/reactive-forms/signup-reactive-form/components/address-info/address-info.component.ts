@@ -34,7 +34,6 @@ import { Subscription } from 'rxjs';
 export class AddressInfoComponent
   implements OnInit, ControlValueAccessor, Validator {
   addressInfoForm: FormGroup;
-  validationMessage: string;
   countries: Array<string> = [
     'Ukraine',
     'Armenia',
@@ -45,16 +44,23 @@ export class AddressInfoComponent
     'Russia'
   ];
 
-  private validationMessagesMap = {
-    city: {
-      required: 'Please enter city'
-    }
-  };
+  validationMessagesMap = new Map([
+    ['city', {
+      message: '', // <== сформированное сообщение для пользователя
+      required: 'Please enter city',
+    }]
+  ]);
+
+
   private sub: Subscription;
 
   // tslint:disable-next-line: no-input-rename
   @Input('index') i = 0;
   @Output() removeAddress = new EventEmitter<number>();
+
+  get city(): AbstractControl {
+    return this.addressInfoForm.get('city');
+  }
 
   constructor(private fb: FormBuilder) {}
 
@@ -65,6 +71,11 @@ export class AddressInfoComponent
 
   onRemoveAddress(index: number): void {
     this.removeAddress.emit(index);
+  }
+
+  onBlur(event) {
+    const controlName = event.target.getAttribute('formControlName');
+    this.setValidationMessages(controlName);
   }
 
   private buildAddress(): FormGroup {
@@ -79,19 +90,35 @@ export class AddressInfoComponent
   }
 
   private watchValueChanges() {
-    const cityControl = this.addressInfoForm.get('city');
-
-    this.sub = cityControl.valueChanges
+    this.sub = this.city.valueChanges
       .pipe(debounceTime(1000))
-      .subscribe(value => this.setValidationMessage(cityControl, 'city'));
+      .subscribe(value => this.setValidationMessages('city'));
   }
 
-  private setValidationMessage(c: AbstractControl, controlName: string) {
-    this.validationMessage = '';
+  private setValidationMessages(controlName?: string) {
+    // валидация для заданого контрола,
+    // например для события blur
+    if (controlName) {
+      this.buildValidationMessages(controlName);
+    }
 
-    if ((c.touched || c.dirty) && c.errors) {
-      this.validationMessage = Object.keys(c.errors)
-        .map(key => this.validationMessagesMap[controlName][key])
+    // валидация для всех контролов,
+    // например при изменении чего-либо на форме
+    else {
+      this.validationMessagesMap.forEach((control, cntrlName) => {
+        this.buildValidationMessages(cntrlName);
+      });
+    }
+  }
+
+  private buildValidationMessages(controlName: string) {
+    // const c: AbstractControl = this.controls.get(controlName);
+    const c: AbstractControl = this[controlName]; // вызов гетера
+    this.validationMessagesMap.get(controlName).message = '';
+
+    if ((c.touched || c.dirty) && c.invalid && c.errors) {
+      this.validationMessagesMap.get(controlName).message = Object.keys(c.errors)
+        .map(key => this.validationMessagesMap.get(controlName)[key])
         .join(' ');
     }
   }

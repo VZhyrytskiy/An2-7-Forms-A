@@ -34,14 +34,15 @@
           </select>
       </div>
       <div class="col-md-3"
-           [ngClass]="{'has-error': validationMessage}" >
+           [ngClass]="{'has-error': validationMessagesMap.get('city').message}" >
           <input type="text"
                 class="form-control"
                 id="{{'cityId' + i}}"
                 placeholder="City"
-                formControlName="city">
-          <span class="help-block" *ngIf="validationMessage">
-            validationMessage
+                formControlName="city"
+                (blur)="onBlur($event)">
+          <span class="help-block" *ngIf="validationMessagesMap.get('city').message">
+            {{validationMessagesMap.get('city').message}}
           </span>
       </div>
       <div class="col-md-2">
