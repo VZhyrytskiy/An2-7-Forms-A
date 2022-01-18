@@ -137,6 +137,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildForm();
     this.watchValueChanges();
+    this.setValidationMessages();
   }
 
   ngOnDestroy(): void {
@@ -152,10 +153,8 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
   }
 
-  // перезапуск валидации контрола на событие blur
-  onBlur(event): void {
-    const controlName = event.target.getAttribute('formControlName');
-    this.setValidationMessages(controlName);
+  isShowValidationMessage(controlName: string): boolean {
+    return this.validationMessagesMap.get(controlName).message && this[controlName].touched;
   }
 
   private setNotification(notifyVia: string): void {
@@ -203,11 +202,10 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   private buildValidationMessages(controlName: string): void {
-    // const c: AbstractControl = this.controls.get(controlName);
     const c: AbstractControl = this[controlName]; // вызов гетера
     this.validationMessagesMap.get(controlName).message = '';
 
-    if ((c.touched || c.dirty) && c.invalid && c.errors) {
+    if (c.errors) {
       this.validationMessagesMap.get(controlName).message = Object.keys(c.errors)
         .map(key => this.validationMessagesMap.get(controlName)[key])
         .join(' ');
@@ -282,20 +280,10 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setValidationMessages(controlName?: string): void {
-    // валидация для заданого контрола,
-    // например для события blur
-    if (controlName) {
-      this.buildValidationMessages(controlName);
-    }
-
-    // валидация для всех контролов,
-    // например при изменении чего-либо на форме
-    else {
+  private setValidationMessages(): void {
       this.validationMessagesMap.forEach((control, cntrlName) => {
         this.buildValidationMessages(cntrlName);
       });
-    }
   }
 
   private patchFormValues(): void {
