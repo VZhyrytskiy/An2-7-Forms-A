@@ -38,11 +38,11 @@ export class SignupReactiveFormComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.createForm();
   }
 
-  onSave() {
+  onSave(): void {
     // Form model
     console.log(this.userForm);
     // Form value w/o disabled controls
@@ -51,7 +51,7 @@ export class SignupReactiveFormComponent implements OnInit {
     console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
   }
 
-  private createForm() {
+  private createForm(): void {
     this.userForm = new FormGroup({
       firstName: new FormControl(),
       lastName: new FormControl(),
