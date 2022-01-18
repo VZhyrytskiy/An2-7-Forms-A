@@ -67,7 +67,7 @@ export class SignupReactiveFormComponent implements OnInit {
     });
   }
 
-  private setFormValues() {
+  private setFormValues(): void {
     this.userForm.setValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -76,7 +76,7 @@ export class SignupReactiveFormComponent implements OnInit {
     });
   }
 
-  private patchFormValues() {
+  private patchFormValues(): void {
     this.userForm.patchValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName
