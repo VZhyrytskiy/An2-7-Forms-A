@@ -134,16 +134,16 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     return this.userForm.get('sendProducts');
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildForm();
     this.watchValueChanges();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
-  onSave() {
+  onSave(): void {
     // Form model
     console.log(this.userForm);
     // Form value w/o disabled controls
@@ -153,12 +153,12 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   // перезапуск валидации контрола на событие blur
-  onBlur(event) {
+  onBlur(event): void {
     const controlName = event.target.getAttribute('formControlName');
     this.setValidationMessages(controlName);
   }
 
-  private setNotification(notifyVia: string) {
+  private setNotification(notifyVia: string): void {
     const controls = new Map();
     controls.set('phoneControl', this.phone);
     controls.set('emailGroup', this.emailGroup);
@@ -202,7 +202,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     controls.forEach(control => control.updateValueAndValidity());
   }
 
-  private buildValidationMessages(controlName: string) {
+  private buildValidationMessages(controlName: string): void {
     // const c: AbstractControl = this.controls.get(controlName);
     const c: AbstractControl = this[controlName]; // вызов гетера
     this.validationMessagesMap.get(controlName).message = '';
@@ -214,7 +214,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private createForm() {
+  private createForm(): void {
     this.userForm = new FormGroup({
       firstName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)],
@@ -232,7 +232,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private buildForm() {
+  private buildForm(): void {
     this.userForm = this.fb.group({
       // firstName: ['', [Validators.required, Validators.minLength(3)]],
       // It works!
@@ -273,7 +273,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setFormValues() {
+  private setFormValues(): void {
     this.userForm.setValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -282,7 +282,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setValidationMessages(controlName?: string) {
+  private setValidationMessages(controlName?: string): void {
     // валидация для заданого контрола,
     // например для события blur
     if (controlName) {
@@ -298,14 +298,14 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private patchFormValues() {
+  private patchFormValues(): void {
     this.userForm.patchValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName
     });
   }
 
-  private watchValueChanges() {
+  private watchValueChanges(): void {
     this.sub = this.notification.valueChanges
       // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));
