@@ -1,12 +1,9 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export class CustomValidators {
-  static serviceLevel(c: AbstractControl): ValidationErrors | null {
+  static serviceLevel({ value }: AbstractControl): ValidationErrors | null {
     console.log('Validator: serviceLevel is called');
-    if (
-      c.value !== undefined &&
-      (Number.isNaN(c.value) || c.value < 1 || c.value > 5)
-    ) {
+    if (value !== undefined && (Number.isNaN(value) || value < 1 || value > 5)) {
       return {
         serviceLevel: true
       };
@@ -15,10 +12,10 @@ export class CustomValidators {
   }
 
   static serviceLevelRange(min: number, max: number): ValidatorFn {
-    return (c: AbstractControl): ValidationErrors | null => {
+    return ({ value }: AbstractControl): ValidationErrors | null => {
       if (
-        c.value !== undefined &&
-        (Number.isNaN(c.value) || c.value < min || c.value > max)
+        value !== undefined &&
+        (Number.isNaN(value) || value < min || value > max)
       ) {
         return {
           serviceLevel: true
