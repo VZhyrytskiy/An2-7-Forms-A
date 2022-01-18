@@ -86,16 +86,16 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     return this.userForm.get('notification');
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildForm();
     this.watchValueChanges();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
-  onSave() {
+  onSave(): void {
     // Form model
     console.log(this.userForm);
     // Form value w/o disabled controls
@@ -104,7 +104,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
   }
 
-  private setNotification(notifyVia: string) {
+  private setNotification(notifyVia: string): void {
     const controls = new Map();
     controls.set('phoneControl', this.phone);
     controls.set('emailGroup', this.emailGroup);
@@ -148,7 +148,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     controls.forEach(control => control.updateValueAndValidity());
   }
 
-  private createForm() {
+  private createForm(): void {
     this.userForm = new FormGroup({
       firstName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)],
@@ -166,7 +166,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private buildForm() {
+  private buildForm(): void {
     this.userForm = this.fb.group({
       // firstName: ['', [Validators.required, Validators.minLength(3)]],
       // It works!
@@ -207,7 +207,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setFormValues() {
+  private setFormValues(): void {
     this.userForm.setValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -216,14 +216,14 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private patchFormValues() {
+  private patchFormValues(): void {
     this.userForm.patchValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName
     });
   }
 
-  private watchValueChanges() {
+  private watchValueChanges(): void {
     this.sub = this.notification.valueChanges
       // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));

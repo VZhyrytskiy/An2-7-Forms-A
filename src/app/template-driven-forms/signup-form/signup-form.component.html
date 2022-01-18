@@ -9,7 +9,7 @@
               (ngSubmit)="onSave(signupForm)">
             <fieldset>
                 <div class="form-group"
-                     [ngClass]="{'has-error': (firstNameVar.touched || firstNameVar.dirty) && firstNameVar.invalid}">
+                     [class.has-error]="(firstNameVar.touched || firstNameVar.dirty) && firstNameVar.invalid">
                     <label class="col-md-2 control-label"
                            for="firstNameId">First Name</label>
                     <div class="col-md-8">
