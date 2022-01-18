@@ -1,9 +1,9 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 export class CustomValidators {
-  static serviceLevel(c: AbstractControl): ValidationErrors | null {
+  static serviceLevel({ value }: AbstractControl): ValidationErrors | null {
     console.log('Validator: serviceLevel is called');
-    if (c.value !== undefined && (Number.isNaN(c.value) || c.value < 1 || c.value > 5)) {
+    if (value !== undefined && (Number.isNaN(value) || value < 1 || value > 5)) {
       return {
         serviceLevel: true
       };
