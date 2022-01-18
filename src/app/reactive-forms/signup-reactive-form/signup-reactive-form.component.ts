@@ -66,12 +66,14 @@ export class SignupReactiveFormComponent implements OnInit {
     return this.userForm.get('serviceLevel');
   }
 
-  ngOnInit() {
-    this.buildForm();
+  ngOnInit(): void {
     // this.createForm();
+    this.buildForm();
+    // this.setFormValues();
+    // this.patchFormValues();
   }
 
-  onSave() {
+  onSave(): void {
     // Form model
     console.log(this.userForm);
     // Form value w/o disabled controls
@@ -80,7 +82,7 @@ export class SignupReactiveFormComponent implements OnInit {
     console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
   }
 
-  onSetNotification(notifyVia: string) {
+  onSetNotification(notifyVia: string): void {
     const phoneControl = this.phone;
     const emailControl = this.email;
 
@@ -107,7 +109,7 @@ export class SignupReactiveFormComponent implements OnInit {
     emailControl.updateValueAndValidity();
   }
 
-  private createForm() {
+  private createForm(): void {
     this.userForm = new FormGroup({
       firstName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)],
@@ -125,7 +127,7 @@ export class SignupReactiveFormComponent implements OnInit {
     });
   }
 
-  private buildForm() {
+  private buildForm(): void {
     this.userForm = this.fb.group({
       // firstName: ['', [Validators.required, Validators.minLength(3)]],
       // It works!
@@ -160,7 +162,7 @@ export class SignupReactiveFormComponent implements OnInit {
     });
   }
 
-  private setFormValues() {
+  private setFormValues(): void {
     this.userForm.setValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -169,7 +171,7 @@ export class SignupReactiveFormComponent implements OnInit {
     });
   }
 
-  private patchFormValues() {
+  private patchFormValues(): void {
     this.userForm.patchValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName
