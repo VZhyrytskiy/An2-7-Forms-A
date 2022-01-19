@@ -10,7 +10,6 @@ import {
 } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 
 import { UserModel } from './../../models/user.model';
 import { CustomValidators } from './../../validators';
@@ -140,16 +139,17 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     return this.userForm.get('addresses') as FormArray;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildForm();
     this.watchValueChanges();
+    this.setValidationMessages();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
-  onSave() {
+  onSave(): void {
     // Form model
     console.log(this.userForm);
     // Form value w/o disabled controls
@@ -162,17 +162,15 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     this.addresses.push(this.buildAddress());
   }
 
-  // перезапуск валидации контрола на событие blur
-  onBlur(event) {
-    const controlName = event.target.getAttribute('formControlName');
-    this.setValidationMessages(controlName);
+  isShowValidationMessage(controlName: string): boolean {
+    return this.validationMessagesMap.get(controlName).message && this[controlName].touched;
   }
 
   onRemoveAddress(index: number): void {
     this.addresses.removeAt(index);
   }
 
-  private setNotification(notifyVia: string) {
+  private setNotification(notifyVia: string): void {
     const controls = new Map();
     controls.set('phoneControl', this.phone);
     controls.set('emailGroup', this.emailGroup);
@@ -216,19 +214,18 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     controls.forEach(control => control.updateValueAndValidity());
   }
 
-  private buildValidationMessages(controlName: string) {
-    // const c: AbstractControl = this.controls.get(controlName);
+  private buildValidationMessages(controlName: string): void {
     const c: AbstractControl = this[controlName]; // вызов гетера
     this.validationMessagesMap.get(controlName).message = '';
 
-    if ((c.touched || c.dirty) && c.invalid && c.errors) {
+    if (c.errors) {
       this.validationMessagesMap.get(controlName).message = Object.keys(c.errors)
         .map(key => this.validationMessagesMap.get(controlName)[key])
         .join(' ');
     }
   }
 
-  private createForm() {
+  private createForm(): void {
     this.userForm = new FormGroup({
       firstName: new FormControl('', {
         validators: [Validators.required, Validators.minLength(3)],
@@ -246,7 +243,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private buildForm() {
+  private buildForm(): void {
     this.userForm = this.fb.group({
       // firstName: ['', [Validators.required, Validators.minLength(3)]],
       // It works!
@@ -300,7 +297,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setFormValues() {
+  private setFormValues(): void {
     this.userForm.setValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -309,36 +306,24 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setValidationMessages(controlName?: string) {
-    // валидация для заданого контрола,
-    // например для события blur
-    if (controlName) {
-      this.buildValidationMessages(controlName);
-    }
-
-    // валидация для всех контролов,
-    // например при изменении чего-либо на форме
-    else {
+  private setValidationMessages(): void {
       this.validationMessagesMap.forEach((control, cntrlName) => {
         this.buildValidationMessages(cntrlName);
       });
-    }
   }
 
-  private patchFormValues() {
+  private patchFormValues(): void {
     this.userForm.patchValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName
     });
   }
 
-  private watchValueChanges() {
+  private watchValueChanges(): void {
     this.sub = this.notification.valueChanges
-      // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));
 
     const sub = this.userForm.valueChanges
-    .pipe(debounceTime(1000) )
     .subscribe(ignorValue =>
         this.setValidationMessages()
     );
