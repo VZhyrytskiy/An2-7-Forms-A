@@ -2,11 +2,11 @@ import { Directive } from '@angular/core';
 import {
   NG_ASYNC_VALIDATORS,
   Validator,
-  AbstractControl
+  AbstractControl,
+  ValidationErrors
 } from '@angular/forms';
 
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
+import { Observable, debounceTime, distinctUntilChanged, first } from 'rxjs';
 import { CustomValidators } from './custom.validators';
 
 @Directive({
@@ -23,7 +23,7 @@ import { CustomValidators } from './custom.validators';
 export class AsyncEmailValidatorDirective implements Validator {
   validate(
     c: AbstractControl
-  ): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> {
+  ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     return CustomValidators.asyncEmailPromiseValidator(c);
     // return this.validateEmailObservable(c.value)
     //   .pipe(
@@ -36,7 +36,7 @@ export class AsyncEmailValidatorDirective implements Validator {
     //   );
   }
 
-  private validateEmailObservable(email: string) {
+  private validateEmailObservable(email: string): Observable<ValidationErrors | null> {
     return new Observable(observer => {
       if (email === 'existsemail@example.com') {
         observer.next({ asyncEmailInvalid: true });
