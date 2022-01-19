@@ -16,6 +16,6 @@ export class ServiceLevelDirective implements Validator {
   @Input() rMax: number;
 
   validate(c: AbstractControl): ValidationErrors | null {
-    return checkServiceLevel(c, this.rMin, this.rMax);
+    return checkServiceLevel(c.value, this.rMin, this.rMax);
   }
 }
