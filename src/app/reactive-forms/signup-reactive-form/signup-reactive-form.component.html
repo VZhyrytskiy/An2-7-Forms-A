@@ -8,7 +8,7 @@
               [formGroup]="userForm">
             <fieldset>
                 <div class="form-group"
-                     [ngClass]="{'has-error': validationMessagesMap.get('firstName').message }">
+                     [ngClass]="{'has-error': isShowValidationMessage('firstName') }">
                     <label class="col-md-2 control-label"
                            for="firstNameId">First Name</label>
 
@@ -17,9 +17,8 @@
                                id="firstNameId"
                                type="text"
                                placeholder="First Name (required)"
-                               formControlName="firstName"
-                               (blur)="onBlur($event)" />
-                        <span class="help-block" *ngIf="validationMessagesMap.get('firstName').message">
+                               formControlName="firstName" />
+                        <span class="help-block" *ngIf="isShowValidationMessage('firstName')">
                                 {{validationMessagesMap.get('firstName').message}}
                         </span>
 
@@ -27,7 +26,7 @@
                 </div>
 
                 <div class="form-group"
-                     [ngClass]="{'has-error': validationMessagesMap.get('lastName').message }">
+                     [ngClass]="{'has-error': isShowValidationMessage('lastName') }">
                     <label class="col-md-2 control-label"
                         for="lastNameId">Last Name</label>
 
@@ -36,9 +35,8 @@
                                id="lastNameId"
                                type="text"
                                placeholder="Last Name (required)"
-                               formControlName="lastName"
-                               (blur)="onBlur($event)" />
-                        <span class="help-block" *ngIf="validationMessagesMap.get('lastName').message">
+                               formControlName="lastName" />
+                        <span class="help-block" *ngIf="isShowValidationMessage('lastName')">
                                 {{validationMessagesMap.get('lastName').message}}
                         </span>
 
@@ -46,10 +44,10 @@
                 </div>
 
                 <div formGroupName="emailGroup"
-                     [ngClass]="{'has-error': validationMessagesMap.get('emailGroup').message}">
+                     [ngClass]="{'has-error': isShowValidationMessage('emailGroup') }">
                     <!--Email -->
                     <div class="form-group"
-                         [ngClass]="{'has-error': validationMessagesMap.get('email').message }">
+                         [ngClass]="{'has-error': isShowValidationMessage('email') }">
                     <label class="col-md-2 control-label" for="emailId">Email</label>
                     <div class="col-md-8">
                         <input class="form-control"
@@ -57,9 +55,8 @@
                                type="email"
                                placeholder={{placeholder.email}}
                                formControlName="email"
-                               appAsyncEmailValidator
-                               (blur)="onBlur($event)" />
-                               <span class="help-block" *ngIf="validationMessagesMap.get('email').message">
+                               appAsyncEmailValidator />
+                               <span class="help-block" *ngIf="isShowValidationMessage('email')">
                                 {{validationMessagesMap.get('email').message}}
                            </span>
                       </div>
@@ -67,7 +64,7 @@
 
                     <!-- ConfirmEmail-->
                     <div class="form-group"
-                      [ngClass]="{'has-error': validationMessagesMap.get('confirmEmail').message }">
+                      [ngClass]="{'has-error': isShowValidationMessage('confirmEmail') }">
                       <label class="col-md-2 control-label" for="confirmEmailId">Confirm Email</label>
 
                       <div class="col-md-8">
@@ -75,12 +72,11 @@
                                 id="confirmEmailId"
                                 type="email"
                                 placeholder={{placeholder.confirmEmail}}
-                                formControlName="confirmEmail"
-                                (blur)="onBlur($event)" />
-                          <span class="help-block" *ngIf="validationMessagesMap.get('confirmEmail').message ">
+                                formControlName="confirmEmail" />
+                          <span class="help-block" *ngIf="isShowValidationMessage('confirmEmail')">
                               {{validationMessagesMap.get('confirmEmail').message}}
                           </span>
-                          <span class="help-block" *ngIf="validationMessagesMap.get('emailGroup').message">
+                          <span class="help-block" *ngIf="isShowValidationMessage('emailGroup')">
                             {{validationMessagesMap.get('emailGroup').message}}
                           </span>
                       </div>
@@ -88,7 +84,7 @@
                 </div>
 
                 <div class="form-group"
-                    [ngClass]="{'has-error': validationMessagesMap.get('phone').message }">
+                    [ngClass]="{'has-error': isShowValidationMessage('phone') }">
                     <label class="col-md-2 control-label"
                         for="phoneId">Phone</label>
 
@@ -97,9 +93,8 @@
                                id="phoneId"
                                type="tel"
                                placeholder={{placeholder.phone}}
-                               formControlName="phone"
-                               (blur)="onBlur($event)" />
-                        <span class="help-block" *ngIf="validationMessagesMap.get('phone').message">
+                               formControlName="phone" />
+                        <span class="help-block" *ngIf="isShowValidationMessage('phone')">
                             {{validationMessagesMap.get('phone').message}}
                         </span>
                     </div>
@@ -122,7 +117,7 @@
                  </div>
 
                  <div class="form-group"
-                    [ngClass]="{'has-error': validationMessagesMap.get('serviceLevel').message }">
+                    [ngClass]="{'has-error': isShowValidationMessage('serviceLevel') }">
                     <label class="col-md-2 control-label"
                         for="serviceLevelId">Service Level</label>
 
@@ -131,9 +126,8 @@
                                id="serviceLevelId"
                                type="number"
                                formControlName="serviceLevel"
-                               (blur)="onBlur($event)"
                                appServiceLevelValidator [rMin]="rMin" [rMax]="rMax" />
-                        <span class="help-block" *ngIf="validationMessagesMap.get('serviceLevel').message">
+                        <span class="help-block" *ngIf="isShowValidationMessage('serviceLevel')">
                             {{validationMessagesMap.get('serviceLevel').message}}
                         </span>
                     </div>
