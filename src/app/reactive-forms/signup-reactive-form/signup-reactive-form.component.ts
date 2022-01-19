@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 
 import { UserModel } from './../../models/user.model';
 import { CustomValidators } from './../../validators';
@@ -302,11 +301,9 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
 
   private watchValueChanges(): void {
     this.sub = this.notification.valueChanges
-      // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));
 
     const sub = this.userForm.valueChanges
-    .pipe(debounceTime(1000) )
     .subscribe(ignorValue =>
         this.setValidationMessages()
     );
