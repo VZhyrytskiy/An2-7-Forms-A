@@ -11,7 +11,6 @@ import {
   FormBuilder
 } from '@angular/forms';
 
-import { debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -54,7 +53,6 @@ export class AddressInfoComponent
 
   private sub: Subscription;
 
-  // tslint:disable-next-line: no-input-rename
   @Input('index') i = 0;
   @Output() removeAddress = new EventEmitter<number>();
 
@@ -67,15 +65,15 @@ export class AddressInfoComponent
   ngOnInit() {
     this.addressInfoForm = this.buildAddress();
     this.watchValueChanges();
+    this.setValidationMessages();
   }
 
   onRemoveAddress(index: number): void {
     this.removeAddress.emit(index);
   }
 
-  onBlur(event) {
-    const controlName = event.target.getAttribute('formControlName');
-    this.setValidationMessages(controlName);
+  isShowValidationMessage(controlName: string): boolean {
+    return this.validationMessagesMap.get(controlName).message && this[controlName].touched;
   }
 
   private buildAddress(): FormGroup {
@@ -91,32 +89,20 @@ export class AddressInfoComponent
 
   private watchValueChanges() {
     this.sub = this.city.valueChanges
-      .pipe(debounceTime(1000))
-      .subscribe(value => this.setValidationMessages('city'));
+      .subscribe(value => this.setValidationMessages());
   }
 
-  private setValidationMessages(controlName?: string) {
-    // валидация для заданого контрола,
-    // например для события blur
-    if (controlName) {
-      this.buildValidationMessages(controlName);
-    }
-
-    // валидация для всех контролов,
-    // например при изменении чего-либо на форме
-    else {
-      this.validationMessagesMap.forEach((control, cntrlName) => {
-        this.buildValidationMessages(cntrlName);
-      });
-    }
+  private setValidationMessages() {
+    this.validationMessagesMap.forEach((control, cntrlName) => {
+      this.buildValidationMessages(cntrlName);
+    });
   }
 
   private buildValidationMessages(controlName: string) {
-    // const c: AbstractControl = this.controls.get(controlName);
     const c: AbstractControl = this[controlName]; // вызов гетера
     this.validationMessagesMap.get(controlName).message = '';
 
-    if ((c.touched || c.dirty) && c.invalid && c.errors) {
+    if (c.errors) {
       this.validationMessagesMap.get(controlName).message = Object.keys(c.errors)
         .map(key => this.validationMessagesMap.get(controlName)[key])
         .join(' ');
