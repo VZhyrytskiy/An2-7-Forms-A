@@ -41,7 +41,7 @@
                 placeholder="City"
                 formControlName="city">
           <span class="help-block" *ngIf="isShowValidationMessage('city')">
-            {{validationMessagesMap.get('city').message}}
+            {{validationMessagesMap.get('city')?.message}}
           </span>
       </div>
       <div class="col-md-2">

@@ -8,7 +8,7 @@ import {
   ValidationErrors,
   NG_VALIDATORS,
   Validator,
-  FormBuilder
+  NonNullableFormBuilder
 } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
@@ -32,7 +32,6 @@ import { Subscription } from 'rxjs';
 })
 export class AddressInfoComponent
   implements OnInit, ControlValueAccessor, Validator {
-  addressInfoForm: FormGroup;
   countries: Array<string> = [
     'Ukraine',
     'Armenia',
@@ -50,20 +49,20 @@ export class AddressInfoComponent
     }]
   ]);
 
+  addressInfoForm = this.buildAddress();
 
-  private sub: Subscription;
+  private sub!: Subscription;
 
   @Input('index') i = 0;
   @Output() removeAddress = new EventEmitter<number>();
 
   get city(): AbstractControl {
-    return this.addressInfoForm.get('city');
+    return this.addressInfoForm.get('city')!;
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: NonNullableFormBuilder) {}
 
   ngOnInit() {
-    this.addressInfoForm = this.buildAddress();
     this.watchValueChanges();
     this.setValidationMessages();
   }
@@ -73,10 +72,10 @@ export class AddressInfoComponent
   }
 
   isShowValidationMessage(controlName: string): boolean {
-    return this.validationMessagesMap.get(controlName).message && this[controlName].touched;
+    return this.validationMessagesMap.get(controlName)!.message && (this as {[index: string]: any})[controlName].touched;
   }
 
-  private buildAddress(): FormGroup {
+  private buildAddress() {
     return this.fb.group({
       addressType: 'home',
       country: '',
@@ -99,12 +98,15 @@ export class AddressInfoComponent
   }
 
   private buildValidationMessages(controlName: string) {
-    const c: AbstractControl = this[controlName]; // вызов гетера
-    this.validationMessagesMap.get(controlName).message = '';
+    const c: AbstractControl = (this as {[index: string]: any})[controlName]; // вызов гетера
+    this.validationMessagesMap.get(controlName)!.message = '';
 
     if (c.errors) {
-      this.validationMessagesMap.get(controlName).message = Object.keys(c.errors)
-        .map(key => this.validationMessagesMap.get(controlName)[key])
+      this.validationMessagesMap.get(controlName)!.message = Object.keys(c.errors)
+        .map(key => {
+          const value = this.validationMessagesMap.get(controlName)!;
+          return (value as {[index: string]: any})[key];
+        })
         .join(' ');
     }
   }
