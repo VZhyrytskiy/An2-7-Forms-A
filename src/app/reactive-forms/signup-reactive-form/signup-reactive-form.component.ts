@@ -30,15 +30,15 @@ export class SignupReactiveFormComponent implements OnInit {
   });
 
   get firstName(): AbstractControl {
-    return this.userForm.get('firstName');
+    return this.userForm.get('firstName')!;
   }
 
   get lastName(): AbstractControl {
-    return this.userForm.get('lastName');
+    return this.userForm.get('lastName')!;
   }
 
   get email(): AbstractControl {
-    return this.userForm.get('email');
+    return this.userForm.get('email')!;
   }
 
   constructor() {}
