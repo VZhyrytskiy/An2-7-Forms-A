@@ -3,9 +3,9 @@ import {
   AbstractControl,
   FormGroup,
   FormControl,
-  FormBuilder,
-  Validators,
-  AbstractControlOptions
+  AbstractControlOptions,
+  NonNullableFormBuilder,
+  Validators
 } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
@@ -39,9 +39,6 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     'v.zhiritskiy@gmail.com',
     false
   );
-
-  // form model
-  userForm: FormGroup;
 
   // для удобства меп включает все контроллы,
   // даже если у них нет валидаторов
@@ -93,49 +90,92 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     phone: 'Phone'
   };
 
-  private sub: Subscription;
+  private sub!: Subscription;
 
+  // userForm = new FormGroup({
+  //     firstName: new FormControl('', {
+  //       validators: [Validators.required, Validators.minLength(3)],
+  //       updateOn: 'blur',
+  //       nonNullable: true
+  //     }),
+  //     lastName: new FormControl(),
+  //     email: new FormControl(),
+  //     phone: new FormControl(),
+  //     notification: new FormControl('email'),
+  //     serviceLevel: new FormControl('', {
+  //       validators: [CustomValidators.serviceLevel],
+  //       updateOn: 'blur'
+  //     }),
+  //     sendProducts: new FormControl(true)
+  //   });
 
-  constructor(private fb: FormBuilder) {}
+  userForm = this.fb.group({
+    // firstName: ['', [Validators.required, Validators.minLength(3)]],
+    // It works!
+    firstName: new FormControl('', {validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur'}),
+    // It works since v7
+    // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
+
+    lastName: [
+      { value: 'Zhyrytskyy', disabled: false },
+      [Validators.required, Validators.maxLength(50)]
+    ],
+    emailGroup: this.fb.group({
+      email: ['',
+        [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'), Validators.email],
+// [CustomValidators.asyncEmailPromiseValidator]
+      ],
+      confirmEmail: ['', Validators.required],
+    }, {validator: CustomValidators.emailMatcher} as AbstractControlOptions),
+    phone: '',
+    notification: 'email',
+    serviceLevel: [''],
+    sendProducts: true
+  });
+
+  constructor(private fb: NonNullableFormBuilder) {}
 
   get firstName(): AbstractControl {
-    return this.userForm.get('firstName');
+    return this.userForm.get('firstName')!;
   }
 
   get lastName(): AbstractControl {
-    return this.userForm.get('lastName');
+    return this.userForm.get('lastName')!;
   }
 
   get emailGroup(): AbstractControl {
-    return this.userForm.get('emailGroup');
+    return this.userForm.get('emailGroup')!;
   }
 
   get email(): AbstractControl {
-    return this.userForm.get('emailGroup.email');
+    return this.userForm.get('emailGroup.email')!;
   }
 
   get confirmEmail(): AbstractControl {
-    return this.userForm.get('emailGroup.confirmEmail');
+    return this.userForm.get('emailGroup.confirmEmail')!;
   }
 
   get phone(): AbstractControl {
-    return this.userForm.get('phone');
+    return this.userForm.get('phone')!;
   }
 
   get serviceLevel(): AbstractControl {
-    return this.userForm.get('serviceLevel');
+    return this.userForm.get('serviceLevel')!;
   }
 
   get notification(): AbstractControl {
-    return this.userForm.get('notification');
+    return this.userForm.get('notification')!;
   }
 
   get sendProducts(): AbstractControl {
-    return this.userForm.get('sendProducts');
+    return this.userForm.get('sendProducts')!;
   }
 
+  // [index: string]: any;
+
   ngOnInit(): void {
-    this.buildForm();
+    // this.setFormValues();
+    // this.patchFormValues();
     this.watchValueChanges();
     this.setValidationMessages();
   }
@@ -154,7 +194,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   isShowValidationMessage(controlName: string): boolean {
-    return this.validationMessagesMap.get(controlName).message && this[controlName].touched;
+    return this.validationMessagesMap.get(controlName)!.message && (this as {[index: string]: any})[controlName].touched;
   }
 
   private setNotification(notifyVia: string): void {
@@ -202,83 +242,32 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   }
 
   private buildValidationMessages(controlName: string): void {
-    const c: AbstractControl = this[controlName]; // вызов гетера
-    this.validationMessagesMap.get(controlName).message = '';
+    const c: AbstractControl = (this as {[index: string]: any})[controlName]; // вызов гетера
+    this.validationMessagesMap.get(controlName)!.message = '';
 
     if (c.errors) {
-      this.validationMessagesMap.get(controlName).message = Object.keys(c.errors)
-        .map(key => this.validationMessagesMap.get(controlName)[key])
+      this.validationMessagesMap.get(controlName)!.message = Object.keys(c.errors)
+        .map(key => {
+          const value = this.validationMessagesMap.get(controlName)!;
+          return (value as {[index: string]: any})[key];
+        })
         .join(' ');
     }
   }
 
-  private createForm(): void {
-    this.userForm = new FormGroup({
-      firstName: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(3)],
-        updateOn: 'blur'
-      }),
-      lastName: new FormControl(),
-      email: new FormControl(),
-      phone: new FormControl(),
-      notification: new FormControl('email'),
-      serviceLevel: new FormControl('', {
-        validators: [CustomValidators.serviceLevel],
-        updateOn: 'blur'
-      }),
-      sendProducts: new FormControl(true)
-    });
+
+  onReset(): void {
+    this.userForm.reset();
   }
 
-  private buildForm(): void {
-    this.userForm = this.fb.group({
-      // firstName: ['', [Validators.required, Validators.minLength(3)]],
-      // It works!
-      firstName: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(3)],
-        updateOn: 'change'
-      }),
-      // It doesn't work!, will work in future (Date: 20 Nov 2017)
-      // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
-      lastName: [
-        { value: 'Zhyrytskyy', disabled: false },
-        [Validators.required, Validators.maxLength(50)]
-      ],
-      emailGroup: this.fb.group(
-        {
-          email: [
-            '',
-            [
-              Validators.required,
-              Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
-              Validators.email
-            ]
-            // [CustomValidators.asyncEmailPromiseValidator]
-          ],
-          confirmEmail: ['', Validators.required]
-        },
-        { validator: CustomValidators.emailMatcher } as AbstractControlOptions
-      ),
-      phone: '',
-      notification: 'email',
-      serviceLevel: [''],
-      // serviceLevel: ['', CustomValidators.serviceLevel],
-      // serviceLevel: [
-      //   '',
-      //   CustomValidators.serviceLevelRange(this.rMin, this.rMax)
-      // ],
-      sendProducts: true
-    });
-  }
-
-  private setFormValues(): void {
-    this.userForm.setValue({
-      firstName: this.user.firstName,
-      lastName: this.user.lastName,
-      email: this.user.email,
-      sendProducts: this.user.sendProducts
-    });
-  }
+  // private setFormValues(): void {
+  //   this.userForm.setValue({
+  //     firstName: this.user.firstName,
+  //     lastName: { value: this.user.lastName, disabled: false },
+  //     email: this.user.email,
+  //     sendProducts: this.user.sendProducts
+  //   });
+  // }
 
   private setValidationMessages(): void {
       this.validationMessagesMap.forEach((control, cntrlName) => {
@@ -289,7 +278,7 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
   private patchFormValues(): void {
     this.userForm.patchValue({
       firstName: this.user.firstName,
-      lastName: this.user.lastName
+      lastName: { value: this.user.lastName, disabled: false }
     });
   }
 
