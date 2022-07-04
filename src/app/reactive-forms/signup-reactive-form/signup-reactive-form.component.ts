@@ -27,24 +27,28 @@ export class SignupReactiveFormComponent implements OnInit {
   );
 
   // form model
-  userForm: FormGroup;
+  userForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    email: new FormControl(''),
+    sendProducts: new FormControl(true)
+  });
 
   get firstName(): AbstractControl {
-    return this.userForm.get('firstName');
+    return this.userForm.get('firstName')!;
   }
 
   get lastName(): AbstractControl {
-    return this.userForm.get('lastName');
+    return this.userForm.get('lastName')!;
   }
 
   get email(): AbstractControl {
-    return this.userForm.get('email');
+    return this.userForm.get('email')!;
   }
 
   constructor() {}
 
   ngOnInit(): void {
-    this.createForm();
     // this.setFormValues();
     this.patchFormValues();
   }
@@ -56,15 +60,6 @@ export class SignupReactiveFormComponent implements OnInit {
     console.log(`Saved: ${JSON.stringify(this.userForm.value)}`);
     // Form value w/ disabled controls
     console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
-  }
-
-  private createForm(): void {
-    this.userForm = new FormGroup({
-      firstName: new FormControl(),
-      lastName: new FormControl(),
-      email: new FormControl(),
-      sendProducts: new FormControl(true)
-    });
   }
 
   private setFormValues(): void {
