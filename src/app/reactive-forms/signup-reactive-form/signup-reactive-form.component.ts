@@ -58,6 +58,8 @@ export class SignupReactiveFormComponent implements OnInit {
         Validators.email
       ]
     ],
+    phone: '',
+    notification: 'email',
     sendProducts: true
   })
 
@@ -120,14 +122,14 @@ export class SignupReactiveFormComponent implements OnInit {
     this.userForm.reset();
   }
 
-  private setFormValues(): void {
-    this.userForm.setValue({
-      firstName: this.user.firstName,
-      lastName: { value: this.user.lastName, disabled: false },
-      email: this.user.email,
-      sendProducts: this.user.sendProducts
-    });
-  }
+  // private setFormValues(): void {
+  //   this.userForm.setValue({
+  //     firstName: this.user.firstName,
+  //     lastName: { value: this.user.lastName, disabled: false },
+  //     email: this.user.email,
+  //     sendProducts: this.user.sendProducts
+  //   });
+  // }
 
   private patchFormValues(): void {
     this.userForm.patchValue({
