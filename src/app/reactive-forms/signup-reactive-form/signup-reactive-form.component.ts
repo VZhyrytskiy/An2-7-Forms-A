@@ -22,7 +22,12 @@ export class SignupReactiveFormComponent implements OnInit {
   user: UserModel = new UserModel();
 
   // form model
-  userForm: FormGroup;
+  userForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    email: new FormControl(''),
+    sendProducts: new FormControl(true)
+  });
 
   get firstName(): AbstractControl {
     return this.userForm.get('firstName');
@@ -39,7 +44,6 @@ export class SignupReactiveFormComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.createForm();
   }
 
   onSave(): void {
@@ -51,12 +55,5 @@ export class SignupReactiveFormComponent implements OnInit {
     console.log(`Saved: ${JSON.stringify(this.userForm.getRawValue())}`);
   }
 
-  private createForm(): void {
-    this.userForm = new FormGroup({
-      firstName: new FormControl(),
-      lastName: new FormControl(),
-      email: new FormControl(),
-      sendProducts: new FormControl(true)
-    });
-  }
+
 }
