@@ -20,7 +20,7 @@
                                placeholder="First Name (required)"
                                formControlName="firstName" />
                         <span class="help-block" *ngIf="isShowValidationMessage('firstName')">
-                                {{validationMessagesMap.get('firstName').message}}
+                                {{validationMessagesMap.get('firstName')?.message}}
                         </span>
 
                     </div>
@@ -38,7 +38,7 @@
                                placeholder="Last Name (required)"
                                formControlName="lastName" />
                         <span class="help-block" *ngIf="isShowValidationMessage('lastName')">
-                                {{validationMessagesMap.get('lastName').message}}
+                                {{validationMessagesMap.get('lastName')?.message}}
                         </span>
 
                     </div>
@@ -58,7 +58,7 @@
                                formControlName="email"
                                appAsyncEmailValidator />
                                <span class="help-block" *ngIf="isShowValidationMessage('email')">
-                                {{validationMessagesMap.get('email').message}}
+                                {{validationMessagesMap.get('email')?.message}}
                            </span>
                       </div>
                     </div>
@@ -75,10 +75,10 @@
                                 placeholder={{placeholder.confirmEmail}}
                                 formControlName="confirmEmail" />
                           <span class="help-block" *ngIf="isShowValidationMessage('confirmEmail')">
-                              {{validationMessagesMap.get('confirmEmail').message}}
+                              {{validationMessagesMap.get('confirmEmail')?.message}}
                           </span>
                           <span class="help-block" *ngIf="isShowValidationMessage('emailGroup')">
-                            {{validationMessagesMap.get('emailGroup').message}}
+                            {{validationMessagesMap.get('emailGroup')?.message}}
                           </span>
                       </div>
                     </div>
@@ -96,7 +96,7 @@
                                placeholder={{placeholder.phone}}
                                formControlName="phone" />
                         <span class="help-block" *ngIf="isShowValidationMessage('phone')">
-                            {{validationMessagesMap.get('phone').message}}
+                            {{validationMessagesMap.get('phone')?.message}}
                         </span>
                     </div>
                 </div>
@@ -129,7 +129,7 @@
                                formControlName="serviceLevel"
                                appServiceLevelValidator [rMin]="rMin" [rMax]="rMax" />
                         <span class="help-block" *ngIf="isShowValidationMessage('serviceLevel')">
-                            {{validationMessagesMap.get('serviceLevel').message}}
+                            {{validationMessagesMap.get('serviceLevel')?.message}}
                         </span>
                     </div>
                 </div>
@@ -225,6 +225,11 @@
                                     [disabled]="!userForm.valid">
                                 Save
                             </button>
+                            <button class="btn btn-primary"
+                                    type="button"
+                                    (click)="onReset()">
+                                Reset
+                            </button>
                         </span>
                     </div>
                 </div>
@@ -236,6 +241,5 @@
 <br>Touched: {{ userForm.touched }}
 <br>Valid: {{ userForm.valid }}
 <br>Value: {{ userForm.value | json }}
-<br>ServiceLevel.valid {{userForm.get('serviceLevel').valid}}
-<br>userForm.get('emailGroup').errors {{userForm.get('emailGroup').errors | json}}
+<br>ServiceLevel.valid {{userForm.get('serviceLevel')!.valid}}
 <br>Form Status: {{userForm.status }}
