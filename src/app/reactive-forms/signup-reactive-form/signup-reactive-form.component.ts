@@ -3,7 +3,7 @@ import {
   AbstractControl,
   FormGroup,
   FormControl,
-  FormBuilder,
+  NonNullableFormBuilder,
   Validators
 } from '@angular/forms';
 
@@ -38,37 +38,77 @@ export class SignupReactiveFormComponent implements OnInit {
   );
 
   // form model
-  userForm: FormGroup;
   placeholder = {
     email: 'Email (required)',
     phone: 'Phone'
   };
 
-  constructor(private fb: FormBuilder) {}
+  // userForm = new FormGroup({
+  //     firstName: new FormControl('', {
+  //       validators: [Validators.required, Validators.minLength(3)],
+  //       updateOn: 'blur',
+  //       nonNullable: true
+  //     }),
+  //     lastName: new FormControl(),
+  //     email: new FormControl(),
+  //     phone: new FormControl(),
+  //     notification: new FormControl('email'),
+  //     serviceLevel: new FormControl('', {
+  //       validators: [CustomValidators.serviceLevel],
+  //       updateOn: 'blur'
+  //     }),
+  //     sendProducts: new FormControl(true)
+  //   });
+
+  userForm = this.fb.group({
+    // firstName: ['', [Validators.required, Validators.minLength(3)]],
+    // It works!
+    firstName: new FormControl('', {validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur'}),
+    // It works since v7
+    // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
+
+    lastName: [
+      { value: 'Zhyrytskyy', disabled: false },
+      [Validators.required, Validators.maxLength(50)]
+    ],
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
+        Validators.email
+      ],
+      // [CustomValidators.asyncEmailPromiseValidator]
+    ],
+    phone: '',
+    notification: 'email',
+    serviceLevel: [''],
+    sendProducts: true
+  });
+
+  constructor(private fb: NonNullableFormBuilder) {}
 
   get firstName(): AbstractControl {
-    return this.userForm.get('firstName');
+    return this.userForm.get('firstName')!;
   }
 
   get lastName(): AbstractControl {
-    return this.userForm.get('lastName');
+    return this.userForm.get('lastName')!;
   }
 
   get email(): AbstractControl {
-    return this.userForm.get('email');
+    return this.userForm.get('email')!;
   }
 
   get phone(): AbstractControl {
-    return this.userForm.get('phone');
+    return this.userForm.get('phone')!;
   }
 
   get serviceLevel(): AbstractControl {
-    return this.userForm.get('serviceLevel');
+    return this.userForm.get('serviceLevel')!;
   }
 
   ngOnInit(): void {
-    // this.createForm();
-    this.buildForm();
     // this.setFormValues();
     // this.patchFormValues();
   }
@@ -109,72 +149,23 @@ export class SignupReactiveFormComponent implements OnInit {
     emailControl.updateValueAndValidity();
   }
 
-  private createForm(): void {
-    this.userForm = new FormGroup({
-      firstName: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(3)],
-        updateOn: 'blur'
-      }),
-      lastName: new FormControl(),
-      email: new FormControl(),
-      phone: new FormControl(),
-      notification: new FormControl('email'),
-      serviceLevel: new FormControl('', {
-        validators: [CustomValidators.serviceLevel],
-        updateOn: 'blur'
-      }),
-      sendProducts: new FormControl(true)
-    });
+  onReset(): void {
+    this.userForm.reset();
   }
 
-  private buildForm(): void {
-    this.userForm = this.fb.group({
-      // firstName: ['', [Validators.required, Validators.minLength(3)]],
-      // It works!
-      firstName: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(3)],
-        updateOn: 'blur'
-      }),
-      // It doesn't work!, will work in future (Date: 20 Nov 2017)
-      // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
-      lastName: [
-        { value: 'Zhyrytskyy', disabled: false },
-        [Validators.required, Validators.maxLength(50)]
-      ],
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+'),
-          Validators.email
-        ],
-        // [CustomValidators.asyncEmailPromiseValidator]
-      ],
-      phone: '',
-      notification: 'email',
-      serviceLevel: [''],
-      // serviceLevel: ['', CustomValidators.serviceLevel],
-      // serviceLevel: [
-      //   '',
-      //   CustomValidators.serviceLevelRange(this.rMin, this.rMax)
-      // ],
-      sendProducts: true
-    });
-  }
-
-  private setFormValues(): void {
-    this.userForm.setValue({
-      firstName: this.user.firstName,
-      lastName: this.user.lastName,
-      email: this.user.email,
-      sendProducts: this.user.sendProducts
-    });
-  }
+  // private setFormValues(): void {
+  //   this.userForm.setValue({
+  //     firstName: this.user.firstName,
+  //     lastName: { value: this.user.lastName, disabled: false },
+  //     email: this.user.email,
+  //     sendProducts: this.user.sendProducts
+  //   });
+  // }
 
   private patchFormValues(): void {
     this.userForm.patchValue({
       firstName: this.user.firstName,
-      lastName: this.user.lastName
+      lastName: { value: this.user.lastName, disabled: false }
     });
   }
 }

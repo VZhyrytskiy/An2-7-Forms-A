@@ -224,6 +224,11 @@
 
                                 Save
                             </button>
+                            <button class="btn btn-primary"
+                                    type="button"
+                                    (click)="onReset()">
+                                Reset
+                            </button>
                         </span>
                     </div>
                 </div>
@@ -235,5 +240,5 @@
 <br>Touched: {{ userForm.touched }}
 <br>Valid: {{ userForm.valid }}
 <br>Value: {{ userForm.value | json }}
-<br>ServiceLevel.valid {{userForm.get('serviceLevel').valid}}
+<br>ServiceLevel.valid {{userForm.get('serviceLevel')!.valid}}
 <br>Form Status: {{userForm.status }}
