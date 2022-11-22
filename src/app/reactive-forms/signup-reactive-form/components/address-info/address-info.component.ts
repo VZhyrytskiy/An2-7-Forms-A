@@ -87,7 +87,7 @@ export class AddressInfoComponent
   }
 
   private watchValueChanges() {
-    this.sub = this.city.valueChanges
+    this.city.valueChanges
       .subscribe(value => this.setValidationMessages());
   }
 
