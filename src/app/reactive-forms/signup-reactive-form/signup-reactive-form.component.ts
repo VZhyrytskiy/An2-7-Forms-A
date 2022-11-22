@@ -282,9 +282,8 @@ export class SignupReactiveFormComponent implements OnInit {
       // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));
 
-    const sub = this.userForm.valueChanges.subscribe(ignorValue =>
+    this.userForm.valueChanges.subscribe(ignorValue =>
         this.setValidationMessages()
     );
-    this.sub.add(sub);
   }
 }
