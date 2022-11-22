@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormGroup,
@@ -8,8 +8,6 @@ import {
   Validators
 } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
-
 import { UserModel } from './../../models/user.model';
 import { CustomValidators } from './../../validators';
 
@@ -18,7 +16,7 @@ import { CustomValidators } from './../../validators';
   templateUrl: './signup-reactive-form.component.html',
   styleUrls: ['./signup-reactive-form.component.css']
 })
-export class SignupReactiveFormComponent implements OnInit, OnDestroy {
+export class SignupReactiveFormComponent implements OnInit {
   countries: Array<string> = [
     'Ukraine',
     'Armenia',
@@ -47,7 +45,6 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     phone: 'Phone'
   };
 
-  private sub!: Subscription;
 
   // userForm = new FormGroup({
   //     firstName: new FormControl('', {
@@ -130,10 +127,6 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     this.watchValueChanges();
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
-
   onSave(): void {
     // Form model
     console.log(this.userForm);
@@ -207,8 +200,10 @@ export class SignupReactiveFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  // В статье https://indepth.dev/posts/1433/rxjs-why-memory-leaks-occur-when-using-a-subject
+  // сказано, что можно не отписываться от valueChanges and statusChanges
   private watchValueChanges(): void {
-    this.sub = this.notification.valueChanges
+    this.notification.valueChanges
       // .subscribe(value => console.log(value));
       .subscribe(value => this.setNotification(value));
   }
