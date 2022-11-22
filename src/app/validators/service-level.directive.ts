@@ -4,6 +4,7 @@ import { Validator, AbstractControl, NG_VALIDATORS, ValidationErrors } from '@an
 import { checkServiceLevel } from './custom.validators';
 
 @Directive({
+  standalone: true,
   selector: '[appServiceLevelValidator]',
   providers: [{
       provide: NG_VALIDATORS,
