@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
-import { ValidatorsModule } from './validators/validators.module';
 
 import { AppComponent } from './app.component';
 import { SignupFormComponent } from './template-driven-forms/signup-form/signup-form.component';
 import { SignupReactiveFormComponent } from './reactive-forms/signup-reactive-form/signup-reactive-form.component';
+import { AsyncEmailValidatorDirective, ServiceLevelDirective } from './validators';
 
 @NgModule({
   declarations: [
@@ -19,8 +19,9 @@ import { SignupReactiveFormComponent } from './reactive-forms/signup-reactive-fo
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    ValidatorsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ServiceLevelDirective,
+    AsyncEmailValidatorDirective
   ],
   providers: [],
   bootstrap: [AppComponent]
