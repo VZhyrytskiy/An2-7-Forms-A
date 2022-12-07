@@ -109,11 +109,10 @@ export class SignupReactiveFormComponent implements OnInit {
 
   userForm = this.fb.group({
     // firstName: ['', [Validators.required, Validators.minLength(3)]],
-    // It works!
-    firstName: new FormControl('', {validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur'}),
-    // It works since v7
-    // firstName: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], updateOn: 'blur' }),
-
+    firstName: this.fb.control('', {
+      validators: [Validators.required, Validators.minLength(3)],
+      updateOn: 'blur'
+    }),
     lastName: [
       { value: 'Zhyrytskyy', disabled: false },
       [Validators.required, Validators.maxLength(50)]
@@ -260,7 +259,7 @@ export class SignupReactiveFormComponent implements OnInit {
   // private setFormValues(): void {
   //   this.userForm.setValue({
   //     firstName: this.user.firstName,
-  //     lastName: { value: this.user.lastName, disabled: false },
+  //     lastName: this.user.lastName,
   //     email: this.user.email,
   //     sendProducts: this.user.sendProducts
   //   });
@@ -286,7 +285,7 @@ export class SignupReactiveFormComponent implements OnInit {
   private patchFormValues(): void {
     this.userForm.patchValue({
       firstName: this.user.firstName,
-      lastName: { value: this.user.lastName, disabled: false }
+      lastName: this.user.lastName
     });
   }
 
