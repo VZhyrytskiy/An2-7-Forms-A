@@ -147,7 +147,7 @@ export class SignupReactiveFormComponent implements OnInit {
   // private setFormValues(): void {
   //   this.userForm.setValue({
   //     firstName: this.user.firstName,
-  //     lastName: { value: this.user.lastName, disabled: false },
+  //     lastName: this.user.lastName,
   //     email: this.user.email,
   //     sendProducts: this.user.sendProducts
   //   });
@@ -156,7 +156,7 @@ export class SignupReactiveFormComponent implements OnInit {
   private patchFormValues(): void {
     this.userForm.patchValue({
       firstName: this.user.firstName,
-      lastName: { value: this.user.lastName, disabled: false }
+      lastName: this.user.lastName
     });
   }
 }
