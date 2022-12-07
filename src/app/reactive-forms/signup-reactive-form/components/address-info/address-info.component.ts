@@ -51,8 +51,6 @@ export class AddressInfoComponent
 
   addressInfoForm = this.buildAddress();
 
-  private sub!: Subscription;
-
   @Input('index') i = 0;
   @Output() removeAddress = new EventEmitter<number>();
 
