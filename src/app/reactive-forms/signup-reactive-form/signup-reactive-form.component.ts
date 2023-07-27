@@ -24,6 +24,9 @@ export class SignupReactiveFormComponent implements OnInit {
     false
   );
 
+  rMin = 1;
+  rMax = 4;
+
   // для удобства меп включает все контроллы,
   // даже если у них нет валидаторов
   validationMessagesMap = new Map([
@@ -74,8 +77,7 @@ export class SignupReactiveFormComponent implements OnInit {
     phone: 'Phone'
   };
 
-  rMin = 1;
-  rMax = 4;
+
 
   // userForm = new FormGroup({
   //     firstName: new FormControl('', {
