@@ -1,3 +1,4 @@
+import { NgClass, NgFor, NgForOf, NgIf } from '@angular/common';
 import { Component, OnInit, forwardRef, Input, Output, EventEmitter, inject } from '@angular/core';
 import {
   Validators,
@@ -7,7 +8,8 @@ import {
   ValidationErrors,
   NG_VALIDATORS,
   Validator,
-  NonNullableFormBuilder
+  NonNullableFormBuilder,
+  ReactiveFormsModule
 } from '@angular/forms';
 
 import { COUNTRIES } from 'src/app/data/countries';
@@ -15,6 +17,7 @@ import { COUNTRIES } from 'src/app/data/countries';
 @Component({
   selector: 'app-address-info',
   standalone: true,
+  imports: [ReactiveFormsModule, NgForOf, NgIf, NgClass],
   templateUrl: './address-info.component.html',
   styleUrls: ['./address-info.component.css'],
   providers: [
