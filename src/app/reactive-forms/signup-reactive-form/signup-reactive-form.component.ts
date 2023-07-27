@@ -1,34 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormGroup,
-  FormControl,
-  NonNullableFormBuilder,
-  Validators
-} from '@angular/forms';
-
+import { Component, OnInit, inject } from '@angular/core';
+import { AbstractControl, ReactiveFormsModule, FormGroup, FormControl, FormBuilder, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { UserModel } from './../../models/user.model';
+import { COUNTRIES } from 'src/app/data/countries';
+import { JsonPipe, NgClass, NgIf, NgForOf } from '@angular/common';
 import { CustomValidators } from './../../validators';
 
 @Component({
   selector: 'app-signup-reactive-form',
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, NgForOf, NgClass, JsonPipe],
   templateUrl: './signup-reactive-form.component.html',
   styleUrls: ['./signup-reactive-form.component.css']
 })
 export class SignupReactiveFormComponent implements OnInit {
-  countries: Array<string> = [
-    'Ukraine',
-    'Armenia',
-    'Belarus',
-    'Hungary',
-    'Kazakhstan',
-    'Poland',
-    'Russia'
-  ];
+  private fb = inject(NonNullableFormBuilder);
 
-  rMin = 1;
-  rMax = 3;
-
+  countries: Array<string> = COUNTRIES;
   // data model
   user: UserModel = new UserModel(
     'Vitaliy',
@@ -42,6 +29,10 @@ export class SignupReactiveFormComponent implements OnInit {
     email: 'Email (required)',
     phone: 'Phone'
   };
+
+  rMin = 1;
+  rMax = 3;
+
 
   // userForm = new FormGroup({
   //     firstName: new FormControl('', {
@@ -83,8 +74,6 @@ export class SignupReactiveFormComponent implements OnInit {
     serviceLevel: ['', CustomValidators.serviceLevelRange(this.rMin, this.rMax)],
     sendProducts: true
   });
-
-  constructor(private fb: NonNullableFormBuilder) {}
 
   get firstName(): AbstractControl {
     return this.userForm.get('firstName')!;
