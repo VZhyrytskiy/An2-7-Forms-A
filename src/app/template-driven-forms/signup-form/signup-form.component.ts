@@ -3,12 +3,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 
 import { UserModel } from '../../models/user.model';
 import { COUNTRIES } from 'src/app/data/countries';
-import { JsonPipe, NgClass, NgIf } from '@angular/common';
+import { JsonPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-signup-form',
   standalone: true,
-  imports: [FormsModule, NgIf, NgClass, JsonPipe],
+  imports: [FormsModule, NgIf, NgForOf, NgClass, JsonPipe],
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.css']
 })
