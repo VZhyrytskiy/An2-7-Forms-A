@@ -1,23 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, AbstractControl, FormBuilder, NonNullableFormBuilder } from '@angular/forms';
-
+import { Component, OnInit, inject } from '@angular/core';
+import { AbstractControl, ReactiveFormsModule, FormGroup, FormControl, FormBuilder, NonNullableFormBuilder } from '@angular/forms';
 import { UserModel } from './../../models/user.model';
+import { COUNTRIES } from 'src/app/data/countries';
+import { JsonPipe, NgClass, NgIf, NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-signup-reactive-form',
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, NgForOf, NgClass, JsonPipe],
   templateUrl: './signup-reactive-form.component.html',
   styleUrls: ['./signup-reactive-form.component.css']
 })
 export class SignupReactiveFormComponent implements OnInit {
-  countries: Array<string> = [
-    'Ukraine',
-    'Armenia',
-    'Belarus',
-    'Hungary',
-    'Kazakhstan',
-    'Poland',
-    'Russia'
-  ];
+  private fb = inject(NonNullableFormBuilder);
+
+  countries: Array<string> = COUNTRIES;
   // data model
   user: UserModel = new UserModel(
     'Vitaliy',
@@ -40,8 +37,6 @@ export class SignupReactiveFormComponent implements OnInit {
     email: [''],
     sendProducts: true
   });
-
-  constructor(private fb: NonNullableFormBuilder) {}
 
   get firstName(): AbstractControl {
     return this.userForm.get('firstName')!;
