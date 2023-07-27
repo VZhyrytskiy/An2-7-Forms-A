@@ -10,9 +10,9 @@ import { Observable, debounceTime, distinctUntilChanged, first } from 'rxjs';
 import { CustomValidators } from './custom.validators';
 
 @Directive({
-  standalone: true,
   selector:
-    '[appAsyncEmailValidator][formControlName], [appAsyncEmailValidator][ngModel]',
+  '[appAsyncEmailValidator][formControlName], [appAsyncEmailValidator][ngModel]',
+  standalone: true,
   providers: [
     {
       provide: NG_ASYNC_VALIDATORS,
