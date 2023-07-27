@@ -1,26 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormGroup,
-  FormControl,
-  AbstractControlOptions,
-  FormArray,
-  NonNullableFormBuilder,
-  Validators
-} from '@angular/forms';
-
+import { Component, OnInit, inject } from '@angular/core';
+import { AbstractControl, ReactiveFormsModule, FormGroup, FormControl, FormBuilder, NonNullableFormBuilder, Validators, AbstractControlOptions, FormArray } from '@angular/forms';
 import { UserModel } from './../../models/user.model';
-import { CustomValidators } from './../../validators';
+import { COUNTRIES } from 'src/app/data/countries';
+import { JsonPipe, NgClass, NgIf, NgForOf } from '@angular/common';
+import { CustomValidators, ServiceLevelDirective, AsyncEmailValidatorDirective } from './../../validators';
+import { AddressInfoComponent } from './components/address-info/address-info.component';
 
 @Component({
   selector: 'app-signup-reactive-form',
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, NgForOf, NgClass, JsonPipe, ServiceLevelDirective, AsyncEmailValidatorDirective, AddressInfoComponent],
   templateUrl: './signup-reactive-form.component.html',
   styleUrls: ['./signup-reactive-form.component.css']
 })
 export class SignupReactiveFormComponent implements OnInit {
-  rMin = 1;
-  rMax = 4;
+  private fb = inject(NonNullableFormBuilder);
 
+  countries: Array<string> = COUNTRIES;
+  
   // data model
   user: UserModel = new UserModel(
     'Vitaliy',
@@ -28,6 +25,9 @@ export class SignupReactiveFormComponent implements OnInit {
     'v.zhiritskiy@gmail.com',
     false
   );
+
+  rMin = 1;
+  rMax = 4;
 
   // для удобства меп включает все контроллы,
   // даже если у них нет валидаторов
@@ -80,6 +80,7 @@ export class SignupReactiveFormComponent implements OnInit {
   };
 
 
+
   // userForm = new FormGroup({
   //     firstName: new FormControl('', {
   //       validators: [Validators.required, Validators.minLength(3)],
@@ -120,8 +121,6 @@ export class SignupReactiveFormComponent implements OnInit {
     sendProducts: true,
     addresses: this.fb.array([this.buildAddress()])
   });
-
-  constructor(private fb: NonNullableFormBuilder) {}
 
   get firstName(): AbstractControl {
     return this.userForm.get('firstName')!;

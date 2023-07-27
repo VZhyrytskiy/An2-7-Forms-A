@@ -1,6 +1,5 @@
-import { Component, OnInit, forwardRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, Output, EventEmitter, inject } from '@angular/core';
 import {
-  FormGroup,
   Validators,
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
@@ -11,10 +10,11 @@ import {
   NonNullableFormBuilder
 } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { COUNTRIES } from 'src/app/data/countries';
 
 @Component({
   selector: 'app-address-info',
+  standalone: true,
   templateUrl: './address-info.component.html',
   styleUrls: ['./address-info.component.css'],
   providers: [
@@ -32,15 +32,9 @@ import { Subscription } from 'rxjs';
 })
 export class AddressInfoComponent
   implements OnInit, ControlValueAccessor, Validator {
-  countries: Array<string> = [
-    'Ukraine',
-    'Armenia',
-    'Belarus',
-    'Hungary',
-    'Kazakhstan',
-    'Poland',
-    'Russia'
-  ];
+  private fb = inject(NonNullableFormBuilder);
+
+  countries: Array<string> = COUNTRIES;
 
   validationMessagesMap = new Map([
     ['city', {
@@ -57,8 +51,6 @@ export class AddressInfoComponent
   get city(): AbstractControl {
     return this.addressInfoForm.get('city')!;
   }
-
-  constructor(private fb: NonNullableFormBuilder) {}
 
   ngOnInit() {
     this.watchValueChanges();
