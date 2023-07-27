@@ -1,23 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
-
+import { AbstractControl, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { UserModel } from './../../models/user.model';
+import { COUNTRIES } from 'src/app/data/countries';
+import { JsonPipe, NgClass, NgIf, NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-signup-reactive-form',
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, NgForOf, NgClass, JsonPipe],
   templateUrl: './signup-reactive-form.component.html',
   styleUrls: ['./signup-reactive-form.component.css']
 })
 export class SignupReactiveFormComponent implements OnInit {
-  countries: Array<string> = [
-    'Ukraine',
-    'Armenia',
-    'Belarus',
-    'Hungary',
-    'Kazakhstan',
-    'Poland',
-    'Russia'
-  ];
+  countries: Array<string> = COUNTRIES;
   // data model
   user: UserModel = new UserModel();
 
